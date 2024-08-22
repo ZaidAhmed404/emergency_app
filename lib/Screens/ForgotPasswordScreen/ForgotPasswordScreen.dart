@@ -1,3 +1,4 @@
+import 'package:emergency_app/Widgets/IconButtonWidget.dart';
 import 'package:emergency_app/Widgets/TextButtonWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,13 @@ class ForgotPasswordScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Spacer(),
+              IconButtonWidget(
+                icon: Icons.arrow_back,
+                onPressedFunction: () {
+                  Navigator.pop(context);
+                },
+              ),
               const Spacer(),
               const Text(
                 'Enter Email Address',
