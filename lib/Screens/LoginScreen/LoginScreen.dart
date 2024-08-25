@@ -150,7 +150,8 @@ class LoginScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                      Navigator.of(context)
+                          .pushReplacementNamed(SignUpScreen.routeName);
                     },
                     child: const Text(
                       'Register Now',
