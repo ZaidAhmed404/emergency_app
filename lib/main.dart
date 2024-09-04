@@ -1,12 +1,14 @@
+import 'package:emergency_app/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'Constants/Routes.dart';
-import 'Screens/SplashScreen/SplashScreen.dart';
 import 'firebase_options.dart';
+import 'injection/dependency_injection.dart';
 
 void main() async {
+  setupDependencyInjection();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -25,7 +27,7 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      initialRoute: "/",
       routes: routes,
     );
   }

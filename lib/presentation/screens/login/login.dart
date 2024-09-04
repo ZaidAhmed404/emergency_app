@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
-import '../../Widgets/IconTextWidget.dart';
-import '../../Widgets/TextButtonWidget.dart';
-import '../../Widgets/TextFieldWidget.dart';
-import '../ForgotPasswordScreen/ForgotPasswordScreen.dart';
-import '../SignUpScreen/SignUpScreen.dart';
+import '../../Widgets/icon_text.dart';
+import '../../Widgets/text_button.dart';
+import '../../Widgets/text_field.dart';
+import '../../controllers/auth_controller.dart';
+import '../forgot_password/forgot_password.dart';
+import '../signup/signup.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -13,6 +15,7 @@ class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthController _authController = GetIt.I<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +111,9 @@ class LoginScreen extends StatelessWidget {
               TextButtonWidget(
                 function: () async {
                   if (_formKey.currentState!.validate()) {
+                    await _authController.handleSignIn(
+                        emailController.text, passwordController.text);
+
                     // await auth.signinWithEmailAndPass(
                     //     email, pass, context);
                   }

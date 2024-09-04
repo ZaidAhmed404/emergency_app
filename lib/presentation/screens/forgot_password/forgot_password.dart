@@ -1,8 +1,8 @@
-import 'package:emergency_app/Widgets/IconButtonWidget.dart';
-import 'package:emergency_app/Widgets/TextButtonWidget.dart';
 import 'package:flutter/material.dart';
 
-import '../../Widgets/TextFieldWidget.dart';
+import '../../Widgets/text_button.dart';
+import '../../Widgets/text_field.dart';
+import '../../widgets/icon_button.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});

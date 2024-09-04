@@ -1,18 +1,27 @@
 import 'dart:io';
 
-import 'package:emergency_app/Screens/LoginScreen/LoginScreen.dart';
-import 'package:emergency_app/Widgets/TextButtonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../Constants/ColorConstants.dart';
-import '../../Widgets/TextFieldWidget.dart';
+import '../../../Constants/color_constants.dart';
+import '../../Widgets/text_button.dart';
+import '../../Widgets/text_field.dart';
+import '../../controllers/auth_controller.dart';
+import '../../widgets/toast.dart';
+import '../login/login.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
 
   static const routeName = "/Signup-Screen";
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   XFile? pickedImage;
 
   Future pickImage(ImageSource source) async {
@@ -38,9 +47,12 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController firstController = TextEditingController();
 
   final TextEditingController lastController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
 
+  final AuthController _authController = GetIt.I<AuthController>();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -213,23 +225,17 @@ class SignUpScreen extends StatelessWidget {
               TextButtonWidget(
                 function: () async {
                   if (_formKey.currentState!.validate()) {
-                    // if (pickedImage == null) {
-                    //   toast('Upload Image', context: context);
-                    // } else {
-                    //   await auth.signupWithEmailAndPass(
-                    //       email: email,
-                    //       pass: pass,
-                    //       username: username,
-                    //       image: pickedImage!.path,
-                    //       fName: firstName,
-                    //       lName: lastName,
-                    //       context: context);
-                    //   Navigator.pop(context);
-                    // }
-
-                    // setState(() {});
-                    // .then((value) => Navigator.of(context)
-                    //     .pushNamed(BottomBarScreen.routeName));
+                    if (pickedImage == null) {
+                      toastWidget(
+                          message: 'Please Upload Image', isError: true);
+                    } else {
+                      await _authController.handleSignUp(
+                          emailController.text, passwordController.text);
+                      if (context.mounted) {
+                        Navigator.of(context)
+                            .pushReplacementNamed(LoginScreen.routeName);
+                      }
+                    }
                   }
                 },
                 text: 'Register',
