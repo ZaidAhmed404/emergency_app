@@ -6,23 +6,27 @@ import '../../presentation/widgets/toast.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
 
-  AuthRepositoryImpl(this.firebaseAuth);
+  AuthRepositoryImpl({
+    required this.firebaseAuth,
+  });
 
   @override
-  Future<bool> signUpWithEmail(String email, String password) async {
+  Future<User?> signUpWithEmail(String email, String password) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return true;
+    
+      return userCredential.user;
     } on FirebaseAuthException catch (e) {
       toastWidget(isError: true, message: e.message.toString());
-      return false;
+      return null;
     } catch (e) {
       toastWidget(isError: true, message: "Something Went Wrong");
 
-      return false;
+      return null;
     }
   }
 
@@ -33,6 +37,8 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+
+      toastWidget(isError: false, message: "User signIn Successfully");
       return true;
     } on FirebaseAuthException catch (e) {
       toastWidget(isError: true, message: e.message.toString());
@@ -46,5 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+
+    toastWidget(isError: false, message: "User logout Successfully");
   }
 }

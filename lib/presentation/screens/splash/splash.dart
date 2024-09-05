@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../main.dart';
 import '../login/login.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -22,7 +23,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   initializeSetting() {
-    Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+    navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
   }
 
   @override
