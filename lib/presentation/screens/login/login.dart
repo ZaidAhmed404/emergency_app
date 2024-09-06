@@ -116,6 +116,7 @@ class LoginScreen extends ConsumerWidget {
                   height: 10,
                 ),
                 TextButtonWidget(
+                  buttonWidth: MediaQuery.of(context).size.width,
                   function: () async {
                     FocusScope.of(context).unfocus();
                     screenNotifier.updateLoading(isLoading: true);

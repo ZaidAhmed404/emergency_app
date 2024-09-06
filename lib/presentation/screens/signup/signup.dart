@@ -48,7 +48,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController usernameController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
 
@@ -188,6 +187,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   height: 10,
                 ),
                 TextButtonWidget(
+                  buttonWidth: MediaQuery.of(context).size.width,
                   function: () async {
                     FocusScope.of(context).unfocus();
                     screenNotifier.updateLoading(isLoading: true);

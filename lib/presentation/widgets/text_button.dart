@@ -6,19 +6,21 @@ class TextButtonWidget extends StatelessWidget {
   VoidCallback function;
   bool isSelected;
 
-  TextButtonWidget({
-    super.key,
-    required this.text,
-    required this.function,
-    required this.isSelected,
-  });
+  double buttonWidth;
+
+  TextButtonWidget(
+      {super.key,
+      required this.text,
+      required this.function,
+      required this.isSelected,
+      required this.buttonWidth});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: function,
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: buttonWidth,
         height: 50,
         alignment: Alignment.center,
         decoration: BoxDecoration(

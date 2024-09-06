@@ -1,7 +1,9 @@
+import 'package:emergency_app/presentation/screens/edit_profile/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../../main.dart';
 import '../../../widgets/icon_button.dart';
 
 class ProfileItemWidget extends StatelessWidget {
@@ -49,7 +51,9 @@ class ProfileItemWidget extends StatelessWidget {
         const Spacer(),
         IconButtonWidget(
           icon: Icons.arrow_forward_ios_rounded,
-          onPressedFunction: () {},
+          onPressedFunction: () {
+            navigatorKey.currentState?.pushNamed(EditProfileScreen.routeName);
+          },
           iconSize: 15,
         ),
       ],
