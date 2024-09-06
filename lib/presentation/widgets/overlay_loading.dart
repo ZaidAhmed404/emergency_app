@@ -1,26 +1,23 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lottie/lottie.dart';
 
-import '../provider/screen_provider.dart';
-
-class OverlayLoadingWidget extends ConsumerWidget {
-  OverlayLoadingWidget({
-    super.key,
-    required this.child,
-  });
+class OverlayLoadingWidget extends StatefulWidget {
+  OverlayLoadingWidget(
+      {super.key, required this.child, required this.isLoading});
 
   Widget child;
+  bool isLoading;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(screenNotifierProvider);
-    log("$isLoading");
+  State<OverlayLoadingWidget> createState() => _OverlayLoadingWidgetState();
+}
+
+class _OverlayLoadingWidgetState extends State<OverlayLoadingWidget> {
+  @override
+  Widget build(BuildContext context) {
     return LoadingOverlay(
-      isLoading: isLoading,
+      isLoading: widget.isLoading,
       color: Colors.black,
       opacity: 0.5,
       progressIndicator: Container(
@@ -31,7 +28,7 @@ class OverlayLoadingWidget extends ConsumerWidget {
               width: 50,
               height: 50,
               child: Lottie.asset('assets/lottie/loading.json'))),
-      child: child,
+      child: widget.child,
     );
   }
 }

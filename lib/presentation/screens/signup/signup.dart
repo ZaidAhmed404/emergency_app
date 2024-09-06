@@ -53,10 +53,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final AuthController _authController = GetIt.I<AuthController>();
   final StorageController _storageController = GetIt.I<StorageController>();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return OverlayLoadingWidget(
+      isLoading: isLoading,
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -186,7 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextButtonWidget(
                   function: () async {
                     FocusScope.of(context).unfocus();
-
+                    isLoading = true;
                     if (pickedImage == null) {
                       toastWidget(
                           message: 'Please Upload Image', isError: true);
@@ -201,6 +203,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             userName: usernameController.text);
                       }
                     }
+
+                    isLoading = false;
                   },
                   text: 'Register',
                   isSelected: true,
