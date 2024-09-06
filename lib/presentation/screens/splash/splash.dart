@@ -1,3 +1,5 @@
+import 'package:emergency_app/presentation/screens/home/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -13,6 +15,8 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  final firebaseAuth = FirebaseAuth.instance;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -23,7 +27,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   initializeSetting() {
-    navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
+    if (firebaseAuth.currentUser != null) {
+      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+    } else {
+      navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
+    }
   }
 
   @override

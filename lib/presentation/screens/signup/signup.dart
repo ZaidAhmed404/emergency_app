@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,20 +11,21 @@ import '../../../Constants/color_constants.dart';
 import '../../Widgets/text_button.dart';
 import '../../Widgets/text_field.dart';
 import '../../controllers/auth_controller.dart';
+import '../../provider/screen_provider.dart';
 import '../../widgets/overlay_loading.dart';
 import '../../widgets/toast.dart';
 import '../login/login.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   SignUpScreen({super.key});
 
   static const routeName = "/Signup-Screen";
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   XFile? pickedImage;
 
   Future pickImage(ImageSource source) async {
@@ -53,12 +55,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final AuthController _authController = GetIt.I<AuthController>();
   final StorageController _storageController = GetIt.I<StorageController>();
   final _formKey = GlobalKey<FormState>();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    final screenNotifier = ref.watch(screenNotifierProvider.notifier);
     return OverlayLoadingWidget(
-      isLoading: isLoading,
+      isLoading: ref.watch(screenNotifierProvider),
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -188,7 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextButtonWidget(
                   function: () async {
                     FocusScope.of(context).unfocus();
-                    isLoading = true;
+                    screenNotifier.updateLoading(isLoading: true);
                     if (pickedImage == null) {
                       toastWidget(
                           message: 'Please Upload Image', isError: true);
@@ -204,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                     }
 
-                    isLoading = false;
+                    screenNotifier.updateLoading(isLoading: false);
                   },
                   text: 'Register',
                   isSelected: true,

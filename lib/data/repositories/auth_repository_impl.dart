@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../Domain/Repositories/auth_repository.dart';
 import '../../presentation/widgets/toast.dart';
@@ -18,13 +19,14 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-    
+
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       toastWidget(isError: true, message: e.message.toString());
       return null;
     } catch (e) {
-      toastWidget(isError: true, message: "Something Went Wrong");
+      toastWidget(
+          isError: true, message: "Something Went Wrong. Please try again.");
 
       return null;
     }
@@ -44,7 +46,52 @@ class AuthRepositoryImpl implements AuthRepository {
       toastWidget(isError: true, message: e.message.toString());
       return false;
     } catch (e) {
-      toastWidget(isError: true, message: "Something Went Wrong");
+      toastWidget(
+          isError: true, message: "Something Went Wrong. Please try again.");
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> forgetPassword(String email) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      toastWidget(
+          isError: false,
+          message:
+              "A password reset link has been sent to your email. Please check your inbox.");
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        toastWidget(isError: true, message: "No account found for this email.");
+      } else {
+        toastWidget(
+            isError: true, message: "Something Went Wrong. Please try again.");
+      }
+      return false;
+    } catch (error) {
+      toastWidget(
+          isError: true, message: "Something Went Wrong. Please try again.");
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      toastWidget(isError: false, message: "User SignIn successfully");
+      return true;
+    } catch (error) {
+      toastWidget(
+          isError: true, message: "Something Went Wrong. Please try again.");
       return false;
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lottie/lottie.dart';
 
-class OverlayLoadingWidget extends StatefulWidget {
+class OverlayLoadingWidget extends StatelessWidget {
   OverlayLoadingWidget(
       {super.key, required this.child, required this.isLoading});
 
@@ -10,14 +10,9 @@ class OverlayLoadingWidget extends StatefulWidget {
   bool isLoading;
 
   @override
-  State<OverlayLoadingWidget> createState() => _OverlayLoadingWidgetState();
-}
-
-class _OverlayLoadingWidgetState extends State<OverlayLoadingWidget> {
-  @override
   Widget build(BuildContext context) {
     return LoadingOverlay(
-      isLoading: widget.isLoading,
+      isLoading: isLoading,
       color: Colors.black,
       opacity: 0.5,
       progressIndicator: Container(
@@ -28,7 +23,7 @@ class _OverlayLoadingWidgetState extends State<OverlayLoadingWidget> {
               width: 50,
               height: 50,
               child: Lottie.asset('assets/lottie/loading.json'))),
-      child: widget.child,
+      child: child,
     );
   }
 }
