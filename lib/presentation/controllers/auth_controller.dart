@@ -37,8 +37,11 @@ class AuthController {
     }
   }
 
-  Future<void> handleSignOut() async {
-    await authRepository.signOut();
+  Future handleSignOut() async {
+    final isSuccess = await authRepository.signOut();
+    if (isSuccess == true) {
+      navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
+    }
   }
 
   Future<bool> handleForgetPassword(String email) async {

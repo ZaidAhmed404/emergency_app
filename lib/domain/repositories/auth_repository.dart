@@ -9,5 +9,5 @@ abstract class AuthRepository {
 
   Future<bool> forgetPassword(String email);
 
-  Future<void> signOut();
+  Future<bool> signOut();
 }

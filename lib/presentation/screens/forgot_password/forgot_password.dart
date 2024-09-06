@@ -34,6 +34,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
                   onPressedFunction: () {
                     Navigator.pop(context);
                   },
+                  iconSize: 20,
                 ),
                 const Spacer(),
                 const Text(

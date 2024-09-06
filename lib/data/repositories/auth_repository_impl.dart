@@ -97,9 +97,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async {
-    await firebaseAuth.signOut();
+  Future<bool> signOut() async {
+    try {
+      await firebaseAuth.signOut();
 
-    toastWidget(isError: false, message: "User logout Successfully");
+      toastWidget(isError: false, message: "User logout Successfully");
+      return true;
+    } catch (error) {
+      toastWidget(isError: true, message: "User logout Failed");
+
+      return false;
+    }
   }
 }

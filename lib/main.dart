@@ -1,3 +1,4 @@
+import 'package:emergency_app/presentation/screens/about/about.dart';
 import 'package:emergency_app/presentation/screens/forgot_password/forgot_password.dart';
 import 'package:emergency_app/presentation/screens/home/home.dart';
 import 'package:emergency_app/presentation/screens/login/login.dart';
@@ -48,6 +49,8 @@ class MyApp extends ConsumerWidget {
             return CustomPageRoute(child: HomeScreen());
           case ForgotPasswordScreen.routeName:
             return CustomPageRoute(child: ForgotPasswordScreen());
+          case AboutScreen.routeName:
+            return CustomPageRoute(child: AboutScreen());
           default:
             return null;
         }

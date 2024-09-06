@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 class IconButtonWidget extends StatelessWidget {
   IconButtonWidget(
-      {super.key, required this.icon, required this.onPressedFunction});
+      {super.key,
+      required this.icon,
+      required this.onPressedFunction,
+      required this.iconSize});
 
   IconData icon;
   Function() onPressedFunction;
+  double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,7 @@ class IconButtonWidget extends StatelessWidget {
         child: Icon(
           icon,
           color: Colors.white,
+          size: iconSize,
         ),
       ),
     );
