@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../Widgets/text_button.dart';
-import '../../Widgets/text_field.dart';
 import '../../widgets/heading_text.dart';
 import '../../widgets/icon_button.dart';
+import '../../widgets/text_button.dart';
+import '../../widgets/text_field.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

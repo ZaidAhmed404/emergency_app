@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../Constants/color_constants.dart';
+import '../../../core/color_constants.dart';
 import '../setting/setting.dart';
 
 class HomeScreen extends StatefulWidget {

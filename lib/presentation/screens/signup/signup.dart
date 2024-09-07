@@ -7,12 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../Constants/color_constants.dart';
-import '../../Widgets/text_button.dart';
-import '../../Widgets/text_field.dart';
+import '../../../core/color_constants.dart';
 import '../../controllers/auth_controller.dart';
 import '../../provider/screen_provider.dart';
 import '../../widgets/overlay_loading.dart';
+import '../../widgets/text_button.dart';
+import '../../widgets/text_field.dart';
 import '../../widgets/toast.dart';
 import '../login/login.dart';
 

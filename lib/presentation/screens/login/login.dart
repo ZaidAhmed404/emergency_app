@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../Widgets/icon_text.dart';
-import '../../Widgets/text_button.dart';
-import '../../Widgets/text_field.dart';
 import '../../controllers/auth_controller.dart';
 import '../../provider/screen_provider.dart';
+import '../../widgets/icon_text.dart';
 import '../../widgets/overlay_loading.dart';
+import '../../widgets/text_button.dart';
+import '../../widgets/text_field.dart';
 import '../forgot_password/forgot_password.dart';
 import '../signup/signup.dart';
 

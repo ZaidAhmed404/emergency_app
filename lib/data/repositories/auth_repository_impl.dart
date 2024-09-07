@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../Domain/Repositories/auth_repository.dart';
+import '../../domain/repositories/auth_repository.dart';
 import '../../presentation/widgets/toast.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

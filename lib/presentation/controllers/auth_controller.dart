@@ -1,7 +1,8 @@
-import 'package:emergency_app/Domain/Repositories/auth_repository.dart';
+
 import 'package:emergency_app/domain/repositories/user_repository.dart';
 import 'package:emergency_app/presentation/screens/home/home.dart';
 
+import '../../domain/repositories/auth_repository.dart';
 import '../../main.dart';
 import '../screens/login/login.dart';
 import '../widgets/toast.dart';

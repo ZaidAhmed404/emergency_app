@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../Widgets/text_button.dart';
-import '../../Widgets/text_field.dart';
 import '../../controllers/auth_controller.dart';
 import '../../provider/screen_provider.dart';
 import '../../widgets/icon_button.dart';
+import '../../widgets/text_button.dart';
+import '../../widgets/text_field.dart';
 
 class ForgotPasswordScreen extends ConsumerWidget {
   static const routeName = "/Forgot-Password-Screen";
