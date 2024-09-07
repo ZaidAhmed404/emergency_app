@@ -107,7 +107,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   borderRadius: BorderRadius.circular(widget.borderCircular),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(width: 1.5, color: Colors.red),
+                  borderSide: const BorderSide(width: 1.50, color: Colors.red),
                   borderRadius: BorderRadius.circular(widget.borderCircular),
                 )),
             validator: widget.validationFunction,
