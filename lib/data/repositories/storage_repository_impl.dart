@@ -32,4 +32,22 @@ class StorageRepositoryImpl extends StorageRepository {
       return null;
     }
   }
+
+  @override
+  Future<bool> deleteImage(String imageUrl) async {
+    try {
+      // Create a reference from the image URL
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference storageReference = storage.refFromURL(imageUrl);
+
+      // Delete the file
+      await storageReference.delete();
+
+      print("Image successfully deleted.");
+      return true;
+    } catch (e) {
+      print("Error occurred while deleting image: $e");
+      return false;
+    }
+  }
 }

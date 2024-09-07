@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,39 +67,48 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(
                 height: 20,
               ),
-              ClipOval(
-                  child: SizedBox.fromSize(
-                size: const Size.fromRadius(80), // Image radius
-                child: Image.network(
-                    FirebaseAuth.instance.currentUser!.photoURL!,
-                    fit: BoxFit.fill, loadingBuilder: (BuildContext context,
-                        Widget child, ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Lottie.asset('assets/lottie/loading.json'));
-                }),
-              )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ClipOval(
+                      child: SizedBox.fromSize(
+                    size: const Size.fromRadius(60), // Image radius
+                    child: Image.network(
+                        FirebaseAuth.instance.currentUser!.photoURL!,
+                        fit: BoxFit.fill, loadingBuilder: (BuildContext context,
+                            Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Lottie.asset('assets/lottie/loading.json'));
+                    }),
+                  )),
+                  if (isEditing)
+                    TextButtonWidget(
+                      buttonWidth: MediaQuery.of(context).size.width * 0.5,
+                      function: () async {
+                        FocusScope.of(context).unfocus();
+                        // screenNotifier.updateLoading(isLoading: true);
+
+                        // if (_formKey.currentState!.validate()) {
+                        // await _authController.handleSignInWithEmail(
+                        //     emailController.text, passwordController.text);
+                        // }
+                        // screenNotifier.updateLoading(isLoading: false);
+                      },
+                      isSelected: false,
+                      text: 'Upload Image',
+                    ),
+                ],
+              ),
               const SizedBox(
                 height: 20,
               ),
-              if (isEditing)
-                TextButtonWidget(
-                  buttonWidth: MediaQuery.of(context).size.width * 0.5,
-                  function: () async {
-                    FocusScope.of(context).unfocus();
-                    // screenNotifier.updateLoading(isLoading: true);
-
-                    // if (_formKey.currentState!.validate()) {
-                    // await _authController.handleSignInWithEmail(
-                    //     emailController.text, passwordController.text);
-                    // }
-                    // screenNotifier.updateLoading(isLoading: false);
-                  },
-                  isSelected: true,
-                  text: 'Upload Image',
-                ),
+              HeadingTextWidget(
+                heading: "Profile Data",
+                fontSize: 20,
+              ),
               const SizedBox(
                 height: 20,
               ),
