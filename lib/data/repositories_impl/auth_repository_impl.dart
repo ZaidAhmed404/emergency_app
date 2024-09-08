@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../domain/repositories/auth_repository.dart';
-import '../../presentation/widgets/toast.dart';
+import '../../core/messages.dart';
+import '../repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
+  final Messages _messages = Messages();
 
   AuthRepositoryImpl({
     required this.firebaseAuth,
@@ -22,13 +25,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      toastWidget(isError: true, message: e.message.toString());
-      return null;
+      log("$e", name: "error");
+      throw ("${e.message}");
     } catch (e) {
-      toastWidget(
-          isError: true, message: "Something Went Wrong. Please try again.");
-
-      return null;
+      log("$e", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 
@@ -40,15 +41,13 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
 
-      toastWidget(isError: false, message: "User signIn Successfully");
       return true;
     } on FirebaseAuthException catch (e) {
-      toastWidget(isError: true, message: e.message.toString());
-      return false;
+      log("$e", name: "error");
+      throw ("${e.message}");
     } catch (e) {
-      toastWidget(
-          isError: true, message: "Something Went Wrong. Please try again.");
-      return false;
+      log("$e", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 
@@ -56,23 +55,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> forgetPassword(String email) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
-      toastWidget(
-          isError: false,
-          message:
-              "A password reset link has been sent to your email. Please check your inbox.");
+
       return true;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        toastWidget(isError: true, message: "No account found for this email.");
-      } else {
-        toastWidget(
-            isError: true, message: "Something Went Wrong. Please try again.");
-      }
-      return false;
+      log("$e", name: "error");
+      throw ("${e.message}");
     } catch (error) {
-      toastWidget(
-          isError: true, message: "Something Went Wrong. Please try again.");
-      return false;
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 
@@ -87,12 +77,14 @@ class AuthRepositoryImpl implements AuthRepository {
         idToken: googleAuth?.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-      toastWidget(isError: false, message: "User SignIn successfully");
+
       return true;
+    } on FirebaseAuthException catch (e) {
+      log("$e", name: "error");
+      throw ("${e.message}");
     } catch (error) {
-      toastWidget(
-          isError: true, message: "Something Went Wrong. Please try again.");
-      return false;
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 
@@ -100,13 +92,13 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> signOut() async {
     try {
       await firebaseAuth.signOut();
-
-      toastWidget(isError: false, message: "User logout Successfully");
       return true;
+    } on FirebaseAuthException catch (e) {
+      log("$e", name: "error");
+      throw ("${e.message}");
     } catch (error) {
-      toastWidget(isError: true, message: "User logout Failed");
-
-      return false;
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 }

@@ -1,5 +1,4 @@
-import 'package:emergency_app/domain/repositories/storage_repository.dart';
-
+import '../../data/repositories/storage_repository.dart';
 import '../widgets/toast.dart';
 
 class StorageController {

@@ -1,11 +1,9 @@
-import 'package:emergency_app/presentation/screens/home/home.dart';
+import 'package:emergency_app/presentation/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
-
-import '../../../main.dart';
-import '../login/login.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -17,21 +15,15 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   final firebaseAuth = FirebaseAuth.instance;
 
+  final UserController _userController = GetIt.I<UserController>();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      initializeSetting();
+      _userController.initializeSetting();
     });
-  }
-
-  initializeSetting() {
-    if (firebaseAuth.currentUser != null) {
-      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
-    } else {
-      navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
-    }
   }
 
   @override

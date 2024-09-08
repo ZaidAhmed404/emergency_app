@@ -262,9 +262,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         isEnabled: true,
                         validationFunction: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is required';
+                            return 'Confirm Password is required';
                           } else if (value.length < 8) {
-                            return 'Password must have 8 characters';
+                            return 'Confirm Password must have 8 characters';
                           }
                           return null;
                         },

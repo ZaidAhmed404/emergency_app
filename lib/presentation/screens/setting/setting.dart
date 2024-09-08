@@ -1,6 +1,5 @@
 import 'package:emergency_app/presentation/screens/about/about.dart';
 import 'package:emergency_app/presentation/screens/setting/widgets/item.dart';
-import 'package:emergency_app/presentation/screens/setting/widgets/profile_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -31,7 +30,7 @@ class SettingScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const ProfileItemWidget(),
+            // const ProfileItemWidget(),
             const SizedBox(
               height: 20,
             ),
