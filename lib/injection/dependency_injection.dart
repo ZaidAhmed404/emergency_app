@@ -1,6 +1,7 @@
 import 'package:emergency_app/data/repositories/storage_repository_impl.dart';
 import 'package:emergency_app/data/repositories/user_repository_impl.dart';
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
+import 'package:emergency_app/presentation/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -30,4 +31,8 @@ void setupDependencyInjection() {
       () => StorageController(getIt<StorageRepositoryImpl>()));
 
   getIt.registerLazySingleton<UserRepositoryImpl>(() => UserRepositoryImpl());
+
+  getIt.registerFactory<UserController>(() => UserController(
+      storageRepository: getIt<StorageRepositoryImpl>(),
+      userRepository: getIt<UserRepositoryImpl>()));
 }

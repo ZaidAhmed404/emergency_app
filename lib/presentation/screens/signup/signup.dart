@@ -45,11 +45,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     }
   }
 
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
 
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+
+  final TextEditingController _lastNameController = TextEditingController();
+
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final AuthController _authController = GetIt.I<AuthController>();
   final StorageController _storageController = GetIt.I<StorageController>();
@@ -65,179 +73,279 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(),
-                const Text(
-                  'Sign Up',
-                  style: TextStyle(fontSize: 28),
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    pickedImage != null
-                        ? SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(60),
-                                child: Image.file(
-                                  File(pickedImage!.path),
-                                  fit: BoxFit.cover,
-                                )),
-                          )
-                        : SizedBox(
-                            height: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(
-                                'assets/images/user.png',
-                                // height: 100,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Text(
+                    'Sign Up',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    children: [
+                      pickedImage != null
+                          ? SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(60),
+                                  child: Image.file(
+                                    File(pickedImage!.path),
+                                    fit: BoxFit.cover,
+                                  )),
+                            )
+                          : SizedBox(
+                              height: 50,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(
+                                  'assets/images/user.png',
+                                  // height: 100,
+                                ),
                               ),
                             ),
-                          ),
-                    TextButton(
-                        onPressed: () {
-                          pickImage(ImageSource.gallery);
+                      TextButton(
+                          onPressed: () {
+                            pickImage(ImageSource.gallery);
+                          },
+                          child: Text(
+                            'Select Image',
+                            style:
+                                TextStyle(color: ColorConstants().primaryColor),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      TextFieldWidget(
+                        hintText: "Username",
+                        controller: _userNameController,
+                        isPassword: false,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Username is required';
+                          }
+                          return null;
                         },
-                        child: Text(
-                          'Select Image',
-                          style:
-                              TextStyle(color: ColorConstants().primaryColor),
-                        )),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(children: [
-                    TextFieldWidget(
-                      hintText: "Username",
-                      controller: usernameController,
-                      isPassword: false,
-                      isEnabled: true,
-                      validationFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Username is required';
-                        }
-                        return null;
-                      },
-                      textInputType: TextInputType.text,
-                      textFieldWidth: MediaQuery.of(context).size.width,
-                      onValueChange: (value) {},
-                      maxLines: 1,
-                      borderCircular: 10,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
-                      hintText: "Email Address",
-                      controller: emailController,
-                      isPassword: false,
-                      isEnabled: true,
-                      validationFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Email is required';
-                        } else if (value.length < 8) {
-                          return 'Email must have 8 characters';
-                        } else if (!value.contains("@") ||
-                            !value.contains(".com")) {
-                          return 'Please enter correct email';
-                        }
-                        return null;
-                      },
-                      textInputType: TextInputType.text,
-                      textFieldWidth: MediaQuery.of(context).size.width,
-                      onValueChange: (value) {},
-                      maxLines: 1,
-                      borderCircular: 10,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
-                      hintText: "Password",
-                      controller: passwordController,
-                      isPassword: true,
-                      isEnabled: true,
-                      validationFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Password is required';
-                        } else if (value.length < 8) {
-                          return 'Password must have 8 characters';
-                        }
-                        return null;
-                      },
-                      textInputType: TextInputType.text,
-                      textFieldWidth: MediaQuery.of(context).size.width,
-                      onValueChange: (value) {},
-                      maxLines: 1,
-                      borderCircular: 10,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButtonWidget(
-                  buttonWidth: MediaQuery.of(context).size.width,
-                  function: () async {
-                    FocusScope.of(context).unfocus();
-                    screenNotifier.updateLoading(isLoading: true);
-                    if (pickedImage == null) {
-                      toastWidget(
-                          message: 'Please Upload Image', isError: true);
-                    } else if (_formKey.currentState!.validate()) {
-                      final url = await _storageController
-                          .handleImageUploading(pickedImage!.path.toString());
-                      if (url != null) {
-                        await _authController.handleSignUp(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            url: url,
-                            userName: usernameController.text);
-                      }
-                    }
-
-                    screenNotifier.updateLoading(isLoading: false);
-                  },
-                  text: 'Register',
-                  isSelected: true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already Have Account?',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(LoginScreen.routeName);
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Color(0xffE74140)),
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
                       ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-              ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "First Name",
+                        controller: _firstNameController,
+                        isPassword: false,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'First Name is required';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "Last Name",
+                        controller: _lastNameController,
+                        isPassword: false,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Last Name is required';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "Email Address",
+                        controller: _emailController,
+                        isPassword: false,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email is required';
+                          } else if (value.length < 8) {
+                            return 'Email must have 8 characters';
+                          } else if (!value.contains("@") ||
+                              !value.contains(".com")) {
+                            return 'Please enter correct email';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "Phone Number",
+                        controller: _phoneNumberController,
+                        isPassword: false,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Phone Number is required';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "Password",
+                        controller: _passwordController,
+                        isPassword: true,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password is required';
+                          } else if (value.length < 8) {
+                            return 'Password must have 8 characters';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
+                        hintText: "Confirm Password",
+                        controller: _confirmPasswordController,
+                        isPassword: true,
+                        isEnabled: true,
+                        validationFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password is required';
+                          } else if (value.length < 8) {
+                            return 'Password must have 8 characters';
+                          }
+                          return null;
+                        },
+                        textInputType: TextInputType.text,
+                        textFieldWidth: MediaQuery.of(context).size.width,
+                        onValueChange: (value) {},
+                        maxLines: 1,
+                        borderCircular: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButtonWidget(
+                    buttonWidth: MediaQuery.of(context).size.width,
+                    function: () async {
+                      FocusScope.of(context).unfocus();
+                      screenNotifier.updateLoading(isLoading: true);
+                      if (pickedImage == null) {
+                        toastWidget(
+                            message: 'Please Upload Image', isError: true);
+                      } else if (_formKey.currentState!.validate()) {
+                        if (_passwordController.text !=
+                            _confirmPasswordController.text) {
+                          toastWidget(
+                              isError: true,
+                              message:
+                                  "Password don't match. Please try again");
+                        } else {
+                          final url =
+                              await _storageController.handleImageUploading(
+                                  pickedImage!.path.toString());
+                          if (url != null) {
+                            await _authController.handleSignUp(
+                                email: _emailController.text,
+                                firstName: _firstNameController.text,
+                                lastName: _lastNameController.text,
+                                phoneNumber: _phoneNumberController.text,
+                                password: _passwordController.text,
+                                url: url,
+                                userName: _userNameController.text);
+                          }
+                        }
+                      }
+
+                      screenNotifier.updateLoading(isLoading: false);
+                    },
+                    text: 'Register',
+                    isSelected: true,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already Have Account?',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(LoginScreen.routeName);
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(color: Color(0xffE74140)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

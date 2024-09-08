@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:emergency_app/domain/repositories/storage_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../presentation/widgets/toast.dart';
@@ -34,19 +35,22 @@ class StorageRepositoryImpl extends StorageRepository {
   }
 
   @override
-  Future<bool> deleteImage(String imageUrl) async {
+  Future<bool> deleteImage() async {
     try {
       // Create a reference from the image URL
       FirebaseStorage storage = FirebaseStorage.instance;
-      Reference storageReference = storage.refFromURL(imageUrl);
+      Reference storageReference =
+          storage.refFromURL(FirebaseAuth.instance.currentUser!.photoURL!);
 
       // Delete the file
       await storageReference.delete();
 
-      print("Image successfully deleted.");
+      toastWidget(isError: false, message: "Image successfully deleted");
+
       return true;
     } catch (e) {
-      print("Error occurred while deleting image: $e");
+      toastWidget(
+          isError: true, message: "Error occurred while deleting image");
       return false;
     }
   }

@@ -1,4 +1,3 @@
-
 import 'package:emergency_app/domain/repositories/user_repository.dart';
 import 'package:emergency_app/presentation/screens/home/home.dart';
 
@@ -15,8 +14,11 @@ class AuthController {
 
   Future handleSignUp(
       {required String email,
+      required String firstName,
+      required String lastName,
       required String password,
       required String userName,
+      required String phoneNumber,
       required String url}) async {
     final user = await authRepository.signUpWithEmail(email, password);
     if (user != null) {
