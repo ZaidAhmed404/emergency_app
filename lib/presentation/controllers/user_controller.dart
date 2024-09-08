@@ -1,5 +1,8 @@
+import 'package:emergency_app/data/models/user_model.dart';
 import 'package:emergency_app/domain/services/email_services.dart';
+import 'package:emergency_app/presentation/screens/complete_profile/complete_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/messages.dart';
 import '../../data/repositories/storage_repository.dart';
@@ -36,6 +39,24 @@ class UserController {
     }
   }
 
+  Future completeProfile(
+      {required String userName,
+      required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String url}) async {
+    bool isSuccess = await userRepository.saveUserProfile(
+        userName: userName,
+        photoUrl: url,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber);
+    if (isSuccess == true) {
+      toastWidget(isError: false, message: _messages.successfulLogin);
+      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+    }
+  }
+
   Future handleSendVerificationEmail() async {
     try {
       await emailServices.sendVerificationEmail();
@@ -44,15 +65,22 @@ class UserController {
     }
   }
 
-  void initializeSetting() {
-    if (user != null && !user!.emailVerified) {
-      toastWidget(isError: false, message: _messages.emailVerificationMessage);
+  Future initializeSetting(WidgetRef ref) async {
+    UserModel? userModel = await userRepository.getUserData();
+    if (userModel == null) {
       navigatorKey.currentState
-          ?.pushReplacementNamed(EmailVerificationScreen.routeName);
+          ?.pushReplacementNamed(CompleteProfileScreen.routeName);
     } else {
-      toastWidget(isError: false, message: _messages.successfulLogin);
+      if (user != null && !user!.emailVerified) {
+        toastWidget(
+            isError: false, message: _messages.emailVerificationMessage);
+        navigatorKey.currentState
+            ?.pushReplacementNamed(EmailVerificationScreen.routeName);
+      } else {
+        toastWidget(isError: false, message: _messages.successfulLogin);
 
-      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+        navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+      }
     }
   }
 }

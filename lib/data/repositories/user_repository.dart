@@ -1,3 +1,5 @@
+import 'package:emergency_app/data/models/user_model.dart';
+
 abstract class UserRepository {
   Future<bool> saveUserProfile({
     required String userName,
@@ -15,4 +17,6 @@ abstract class UserRepository {
     required String lastName,
     required String phoneNumber,
   });
+
+  Future<UserModel?> getUserData();
 }

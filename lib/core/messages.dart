@@ -5,4 +5,8 @@ class Messages {
   String emailVerificationMessage =
       "An email has been sent to your email. Please check your inbox and follow the instructions to complete the verification process.";
   String successfulLogin = "You’ve successfully logged in!";
+  String errorFetchingDataMessage =
+      "Error fetching data. Please try again later.";
+  String dataNotFoundMessage =
+      "Oops! We couldn't find the information you're looking for.";
 }

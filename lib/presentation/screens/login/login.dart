@@ -123,7 +123,9 @@ class LoginScreen extends ConsumerWidget {
 
                     if (_formKey.currentState!.validate()) {
                       await _authController.handleSignInWithEmail(
-                          emailController.text, passwordController.text);
+                          email: emailController.text,
+                          password: passwordController.text,
+                          ref: ref);
                     }
                     screenNotifier.updateLoading(isLoading: false);
                   },

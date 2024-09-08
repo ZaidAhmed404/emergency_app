@@ -22,7 +22,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _userController.initializeSetting();
+      _userController.initializeSetting(ref);
     });
   }
 
@@ -30,25 +30,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
-            const Center(
-                child: Text(
-              "Welcome",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            )),
-            const Center(
-                child: Text(
-              "Please Wait a while",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            )),
-            const Spacer(),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: Lottie.asset('assets/lottie/loading.json')),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const Spacer(),
+              const Center(
+                  child: Text(
+                "Welcome",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+              const Center(
+                  child: Text(
+                "Please Wait a while",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+              const Spacer(),
+              SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Lottie.asset('assets/lottie/loading.json')),
+            ],
+          ),
         ),
       ),
     );

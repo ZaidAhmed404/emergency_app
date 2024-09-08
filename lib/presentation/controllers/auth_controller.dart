@@ -1,6 +1,7 @@
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
 import 'package:emergency_app/presentation/screens/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/messages.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -53,12 +54,15 @@ class AuthController {
     }
   }
 
-  Future handleSignInWithEmail(String email, String password) async {
+  Future handleSignInWithEmail(
+      {required WidgetRef ref,
+      required String email,
+      required String password}) async {
     try {
       bool isSuccess = await authRepository.signInWithEmail(email, password);
       if (isSuccess) {
         await emailServices.sendVerificationEmail();
-        userController.initializeSetting();
+        userController.initializeSetting(ref);
       }
     } catch (error) {
       toastWidget(isError: true, message: error.toString());

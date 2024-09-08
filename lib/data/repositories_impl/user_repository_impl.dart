@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../core/messages.dart';
+import '../models/user_model.dart';
 import '../repositories/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final firebaseAuth = FirebaseAuth.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference userCollectionReference =
+      FirebaseFirestore.instance.collection('users');
 
   final Messages _messages = Messages();
 
@@ -22,7 +24,8 @@ class UserRepositoryImpl extends UserRepository {
   }) async {
     // TODO: implement saveUserProfile
     try {
-      users.doc(firebaseAuth.currentUser!.uid).set({
+      userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
+        "uid": firebaseAuth.currentUser!.uid,
         'userName': userName,
         "firstName": firstName,
         "lastName": lastName,
@@ -49,7 +52,7 @@ class UserRepositoryImpl extends UserRepository {
     required String phoneNumber,
   }) async {
     try {
-      users.doc(firebaseAuth.currentUser!.uid).set({
+      userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
         'userName': userName,
         "firstName": firstName,
         "lastName": lastName,
@@ -60,6 +63,26 @@ class UserRepositoryImpl extends UserRepository {
     } on FirebaseAuthException catch (e) {
       log("${e.message}", name: "error");
       throw ("${e.message}");
+    } catch (error) {
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
+    }
+  }
+
+  @override
+  Future<UserModel?> getUserData() async {
+    try {
+      DocumentSnapshot documentSnapshot = await userCollectionReference
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get();
+      if (documentSnapshot.exists) {
+        UserModel user = UserModel.fromJson(
+            (documentSnapshot.data() as Map<String, dynamic>));
+
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       log("$error", name: "error");
       throw (_messages.tryAgainMessage);

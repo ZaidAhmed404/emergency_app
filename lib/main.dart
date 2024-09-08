@@ -1,4 +1,5 @@
 import 'package:emergency_app/presentation/screens/about/about.dart';
+import 'package:emergency_app/presentation/screens/complete_profile/complete_profile.dart';
 import 'package:emergency_app/presentation/screens/edit_profile/edit_profile.dart';
 import 'package:emergency_app/presentation/screens/email_verification/email_verification.dart';
 import 'package:emergency_app/presentation/screens/forgot_password/forgot_password.dart';
@@ -57,6 +58,8 @@ class MyApp extends ConsumerWidget {
             return CustomPageRoute(child: const EditProfileScreen());
           case EmailVerificationScreen.routeName:
             return CustomPageRoute(child: EmailVerificationScreen());
+          case CompleteProfileScreen.routeName:
+            return CustomPageRoute(child: CompleteProfileScreen());
           default:
             return null;
         }
