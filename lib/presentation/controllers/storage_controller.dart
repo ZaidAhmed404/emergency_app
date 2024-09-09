@@ -11,8 +11,21 @@ class StorageController {
     try {
       url = await storageRepository.saveImage(filePath);
     } catch (error) {
-      toastWidget(isError: false, message: "Image Uploading Failed");
+      toastWidget(isError: true, message: "$error");
     }
     return url;
+  }
+
+  Future<bool> handleDeletingImage({required String imageUrl}) async {
+    try {
+      final isSuccess = await storageRepository.deleteImage(imageUrl: imageUrl);
+      if (isSuccess) {
+        toastWidget(isError: false, message: "");
+      }
+      return isSuccess;
+    } catch (error) {
+      toastWidget(isError: true, message: "$error");
+      return false;
+    }
   }
 }

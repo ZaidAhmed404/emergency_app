@@ -1,5 +1,4 @@
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
-import 'package:emergency_app/presentation/screens/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -55,9 +54,9 @@ class AuthController {
   }
 
   Future handleSignInWithEmail(
-      {required WidgetRef ref,
-      required String email,
-      required String password}) async {
+      {required String email,
+      required String password,
+      required WidgetRef ref}) async {
     try {
       bool isSuccess = await authRepository.signInWithEmail(email, password);
       if (isSuccess) {
@@ -85,10 +84,12 @@ class AuthController {
     return isSuccess;
   }
 
-  Future handleSignInWithGoogle() async {
-    final isSuccess = await authRepository.signInWithGoogle();
-    if (isSuccess) {
-      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+  Future handleSignInWithGoogle({required WidgetRef ref}) async {
+    try {
+      await authRepository.signInWithGoogle();
+      userController.initializeSetting(ref);
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
     }
   }
 }

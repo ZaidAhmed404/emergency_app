@@ -204,7 +204,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           }
                           return null;
                         },
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.emailAddress,
                         textFieldWidth: MediaQuery.of(context).size.width,
                         onValueChange: (value) {},
                         maxLines: 1,
@@ -224,7 +224,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           }
                           return null;
                         },
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.phone,
                         textFieldWidth: MediaQuery.of(context).size.width,
                         onValueChange: (value) {},
                         maxLines: 1,

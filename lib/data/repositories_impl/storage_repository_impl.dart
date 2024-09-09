@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../presentation/widgets/toast.dart';
+import '../../core/messages.dart';
 import '../repositories/storage_repository.dart';
 
 class StorageRepositoryImpl extends StorageRepository {
+  final Messages _messages = Messages();
+
   @override
   Future<String?> saveImage(String filePath) async {
     // TODO: implement saveImage
@@ -15,7 +16,6 @@ class StorageRepositoryImpl extends StorageRepository {
     try {
       final file = File(filePath);
       String fileName = filePath.split('/').last;
-      // final metadata = SettableMetadata(contentType: "image/jpeg");
 
       final storageRef = FirebaseStorage.instance.ref();
       final uploadTask =
@@ -29,29 +29,20 @@ class StorageRepositoryImpl extends StorageRepository {
       return url;
     } catch (error) {
       log("$error", name: "error");
-      toastWidget(isError: true, message: "Something went wrong");
-      return null;
+      throw (_messages.tryAgainMessage);
     }
   }
 
   @override
-  Future<bool> deleteImage() async {
+  Future<bool> deleteImage({required String imageUrl}) async {
     try {
-      // Create a reference from the image URL
       FirebaseStorage storage = FirebaseStorage.instance;
-      Reference storageReference =
-          storage.refFromURL(FirebaseAuth.instance.currentUser!.photoURL!);
-
-      // Delete the file
+      Reference storageReference = storage.refFromURL(imageUrl);
       await storageReference.delete();
-
-      toastWidget(isError: false, message: "Image successfully deleted");
-
       return true;
-    } catch (e) {
-      toastWidget(
-          isError: true, message: "Error occurred while deleting image");
-      return false;
+    } catch (error) {
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
     }
   }
 }

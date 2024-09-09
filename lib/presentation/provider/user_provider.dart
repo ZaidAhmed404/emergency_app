@@ -3,7 +3,7 @@ import "dart:developer";
 import "package:emergency_app/data/models/user_model.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
-class ScreenNotifier extends Notifier<UserModel> {
+class UserNotifier extends Notifier<UserModel> {
   @override
   build() {
     // TODO: implement build
@@ -18,10 +18,15 @@ class ScreenNotifier extends Notifier<UserModel> {
 
   updateUserModel({required UserModel userModel}) {
     state = userModel;
-    log("$state", name: "new state");
+    log("$state", name: "new user state");
+  }
+
+  updateImage({required String url}) {
+    state.photoUrl = url;
+    log(state.photoUrl, name: "updated image");
   }
 }
 
-final screenNotifierProvider = NotifierProvider<ScreenNotifier, UserModel>(() {
-  return ScreenNotifier();
+final userNotifierProvider = NotifierProvider<UserNotifier, UserModel>(() {
+  return UserNotifier();
 });

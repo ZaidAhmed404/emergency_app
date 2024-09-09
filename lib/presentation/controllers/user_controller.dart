@@ -8,6 +8,7 @@ import '../../core/messages.dart';
 import '../../data/repositories/storage_repository.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../main.dart';
+import '../provider/user_provider.dart';
 import '../screens/email_verification/email_verification.dart';
 import '../screens/home/home.dart';
 import '../widgets/toast.dart';
@@ -26,34 +27,49 @@ class UserController {
       required this.storageRepository,
       required this.emailServices});
 
-  Future handleUpdatingUserProfile(
-      {required String email,
-      String? imagePath,
-      required String userName}) async {
-    String? photoUrl;
-    if (imagePath != null) {
-      final isSuccess = await storageRepository.deleteImage();
-      if (isSuccess) {
-        photoUrl = await storageRepository.saveImage(imagePath);
-      }
-    }
-  }
-
   Future completeProfile(
       {required String userName,
       required String firstName,
       required String lastName,
       required String phoneNumber,
       required String url}) async {
-    bool isSuccess = await userRepository.saveUserProfile(
-        userName: userName,
-        photoUrl: url,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber);
-    if (isSuccess == true) {
-      toastWidget(isError: false, message: _messages.successfulLogin);
-      navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+    try {
+      bool isSuccess = await userRepository.saveUserProfile(
+          userName: userName,
+          photoUrl: url,
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber);
+      if (isSuccess == true) {
+        toastWidget(isError: false, message: _messages.successfulLogin);
+        navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
+      }
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+      return null;
+    }
+  }
+
+  Future editProfile(
+      {required String userName,
+      required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String url}) async {
+    try {
+      bool isSuccess = await userRepository.saveUserProfile(
+          userName: userName,
+          photoUrl: url,
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber);
+      if (isSuccess == true) {
+        toastWidget(
+            isError: false, message: _messages.successfullyEditProfileMessage);
+      }
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+      return null;
     }
   }
 
@@ -71,6 +87,9 @@ class UserController {
       navigatorKey.currentState
           ?.pushReplacementNamed(CompleteProfileScreen.routeName);
     } else {
+      final userNotifier = ref.watch(userNotifierProvider.notifier);
+      userNotifier.updateUserModel(userModel: userModel);
+
       if (user != null && !user!.emailVerified) {
         toastWidget(
             isError: false, message: _messages.emailVerificationMessage);
@@ -81,6 +100,22 @@ class UserController {
 
         navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
       }
+    }
+  }
+
+  Future<String?> handleUploadingNewProfileImage(
+      {required String filePath, required String oldFilePath}) async {
+    try {
+      final isSuccess =
+          await storageRepository.deleteImage(imageUrl: oldFilePath);
+      if (isSuccess) {
+        final url = await storageRepository.saveImage(filePath);
+        return url;
+      }
+      return null;
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+      return null;
     }
   }
 }

@@ -179,7 +179,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                       }
                       return null;
                     },
-                    textInputType: TextInputType.text,
+                    textInputType: TextInputType.phone,
                     textFieldWidth: MediaQuery.of(context).size.width,
                     onValueChange: (value) {},
                     maxLines: 1,

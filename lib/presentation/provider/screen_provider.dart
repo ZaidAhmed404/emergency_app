@@ -10,9 +10,8 @@ class ScreenNotifier extends Notifier<bool> {
   }
 
   updateLoading({required bool isLoading}) {
-    log("$isLoading", name: "new loading");
     state = isLoading;
-    log("$state", name: "new state");
+    log("$state", name: "new loading state");
   }
 }
 

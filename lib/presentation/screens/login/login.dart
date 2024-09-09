@@ -62,7 +62,7 @@ class LoginScreen extends ConsumerWidget {
                               }
                               return null;
                             },
-                            textInputType: TextInputType.text,
+                            textInputType: TextInputType.emailAddress,
                             textFieldWidth: MediaQuery.of(context).size.width,
                             onValueChange: (value) {},
                             maxLines: 1,
@@ -149,7 +149,7 @@ class LoginScreen extends ConsumerWidget {
                   iconUrl: "assets/icons/google_ic.svg",
                   text: "Google",
                   onPressedFunction: () {
-                    _authController.handleSignInWithGoogle();
+                    _authController.handleSignInWithGoogle(ref: ref);
                   },
                 ),
                 const SizedBox(

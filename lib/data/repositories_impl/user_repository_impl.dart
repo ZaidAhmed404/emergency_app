@@ -43,33 +43,6 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> updateUserProfile({
-    required String userName,
-    required String? photoUrl,
-    required String email,
-    required String firstName,
-    required String lastName,
-    required String phoneNumber,
-  }) async {
-    try {
-      userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
-        'userName': userName,
-        "firstName": firstName,
-        "lastName": lastName,
-        'photoUrl': photoUrl,
-        "phoneNumber": phoneNumber,
-      });
-      return true;
-    } on FirebaseAuthException catch (e) {
-      log("${e.message}", name: "error");
-      throw ("${e.message}");
-    } catch (error) {
-      log("$error", name: "error");
-      throw (_messages.tryAgainMessage);
-    }
-  }
-
-  @override
   Future<UserModel?> getUserData() async {
     try {
       DocumentSnapshot documentSnapshot = await userCollectionReference

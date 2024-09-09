@@ -9,4 +9,6 @@ class Messages {
       "Error fetching data. Please try again later.";
   String dataNotFoundMessage =
       "Oops! We couldn't find the information you're looking for.";
+  String successfullyEditProfileMessage =
+      "Your profile has been successfully updated. All your changes have been saved. 🎉";
 }

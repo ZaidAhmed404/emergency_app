@@ -1,10 +1,10 @@
 class UserModel {
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
-  final String photoUrl;
-  final String userName;
-  final String uid;
+  String firstName;
+  String lastName;
+  String phoneNumber;
+  String photoUrl;
+  String userName;
+  String uid;
 
   UserModel({
     required this.firstName,
