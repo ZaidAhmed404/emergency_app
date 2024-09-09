@@ -11,4 +11,10 @@ class Messages {
       "Oops! We couldn't find the information you're looking for.";
   String successfullyEditProfileMessage =
       "Your profile has been successfully updated. All your changes have been saved. 🎉";
+
+  String locationDeniedForeverMessage =
+      "Location permissions are permanently denied, we cannot request permissions.";
+
+  String locationPermissionDeniedMessage = "Location permissions are denied";
+  String locationServicesDisabledMessage = "Location services are disabled.";
 }

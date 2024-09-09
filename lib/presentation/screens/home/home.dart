@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/color_constants.dart';
+import '../map/map.dart';
 import '../setting/setting.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,10 +15,7 @@ class HomeScreen extends StatefulWidget {
       'Index 0: Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+    MapScreen(),
     Text(
       'Index 2: School',
       style: optionStyle,
