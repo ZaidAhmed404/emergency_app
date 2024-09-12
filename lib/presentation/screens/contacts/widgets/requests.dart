@@ -78,90 +78,80 @@ class Requests extends ConsumerWidget {
                               RequestModel req = requestsModel[index];
                               return Container(
                                 margin: const EdgeInsets.only(top: 10),
-                                child: Column(
+                                child: Row(
                                   children: [
-                                    Row(
+                                    ClipOval(
+                                        child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(25),
+                                      child: Image.network(req.senderPhotoUrl,
+                                          fit: BoxFit.fill, loadingBuilder:
+                                              (BuildContext context,
+                                                  Widget child,
+                                                  ImageChunkEvent?
+                                                      loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return SizedBox(
+                                            width: 50,
+                                            height: 50,
+                                            child: Lottie.asset(
+                                                'assets/lottie/loading.json'));
+                                      }),
+                                    )),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        ClipOval(
-                                            child: SizedBox.fromSize(
-                                          size: const Size.fromRadius(25),
-                                          child: Image.network(
-                                              req.senderPhotoUrl,
-                                              fit: BoxFit.fill, loadingBuilder:
-                                                  (BuildContext context,
-                                                      Widget child,
-                                                      ImageChunkEvent?
-                                                          loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child: Lottie.asset(
-                                                    'assets/lottie/loading.json'));
-                                          }),
-                                        )),
-                                        const SizedBox(
-                                          width: 20,
+                                        Text(
+                                          req.senderUserName,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              req.senderUserName,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(req.senderPhoneNumber),
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        IconButtonWidget(
-                                          icon: Icons.check,
-                                          isFilled: false,
-                                          onPressedFunction: () async {
-                                            screenNotifier.updateLoading(
-                                                isLoading: true);
-
-                                            await _contactsController
-                                                .handleAcceptRequestContactRequest(
-                                                    index: index,
-                                                    userId: req.senderId,
-                                                    userName:
-                                                        req.senderUserName,
-                                                    photoUrl:
-                                                        req.senderPhotoUrl,
-                                                    phoneNumber:
-                                                        req.senderPhoneNumber);
-                                            screenNotifier.updateLoading(
-                                                isLoading: false);
-                                          },
-                                          iconSize: 15,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        IconButtonWidget(
-                                          icon: Icons.close,
-                                          isFilled: true,
-                                          onPressedFunction: () async {
-                                            screenNotifier.updateLoading(
-                                                isLoading: true);
-
-                                            await _contactsController
-                                                .handleRejectContactRequest(
-                                                    index: index);
-                                            screenNotifier.updateLoading(
-                                                isLoading: false);
-                                          },
-                                          iconSize: 15,
-                                        ),
+                                        Text(req.senderPhoneNumber),
                                       ],
                                     ),
-                                    const Divider(
-                                      height: 20,
+                                    const Spacer(),
+                                    IconButtonWidget(
+                                      icon: Icons.check,
+                                      isFilled: false,
+                                      onPressedFunction: () async {
+                                        screenNotifier.updateLoading(
+                                            isLoading: true);
+
+                                        await _contactsController
+                                            .handleAcceptRequestContactRequest(
+                                                index: index,
+                                                userId: req.senderId,
+                                                userName: req.senderUserName,
+                                                photoUrl: req.senderPhotoUrl,
+                                                phoneNumber:
+                                                    req.senderPhoneNumber);
+                                        screenNotifier.updateLoading(
+                                            isLoading: false);
+                                      },
+                                      iconSize: 15,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    IconButtonWidget(
+                                      icon: Icons.close,
+                                      isFilled: true,
+                                      onPressedFunction: () async {
+                                        screenNotifier.updateLoading(
+                                            isLoading: true);
+
+                                        await _contactsController
+                                            .handleRejectContactRequest(
+                                                index: index);
+                                        screenNotifier.updateLoading(
+                                            isLoading: false);
+                                      },
+                                      iconSize: 15,
                                     ),
                                   ],
                                 ),
