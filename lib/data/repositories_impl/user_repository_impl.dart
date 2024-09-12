@@ -24,7 +24,7 @@ class UserRepositoryImpl extends UserRepository {
   }) async {
     // TODO: implement saveUserProfile
     try {
-      userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
+      await userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
         "uid": firebaseAuth.currentUser!.uid,
         'userName': userName,
         "firstName": firstName,

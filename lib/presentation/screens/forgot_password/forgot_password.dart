@@ -31,6 +31,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
                 const Spacer(),
                 IconButtonWidget(
                   icon: Icons.arrow_back,
+                  isFilled: true,
                   onPressedFunction: () {
                     Navigator.pop(context);
                   },

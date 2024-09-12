@@ -1,3 +1,5 @@
+import 'package:emergency_app/data/repositories_impl/contact_repository_impl.dart';
+import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,4 +42,10 @@ void setupDependencyInjection() {
       storageRepository: getIt<StorageRepositoryImpl>(),
       emailServices: getIt<EmailServicesImpl>(),
       userRepository: getIt<UserRepositoryImpl>()));
+
+  getIt.registerLazySingleton<ContactRepositoryImpl>(
+      () => ContactRepositoryImpl());
+
+  getIt.registerFactory<ContactsController>(
+      () => ContactsController(getIt<ContactRepositoryImpl>()));
 }

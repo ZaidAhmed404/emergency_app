@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/color_constants.dart';
@@ -42,6 +41,7 @@ class ItemWidget extends StatelessWidget {
         const Spacer(),
         IconButtonWidget(
           icon: Icons.arrow_forward_ios_rounded,
+          isFilled: true,
           onPressedFunction: onPressedFunction,
           iconSize: 15,
         ),

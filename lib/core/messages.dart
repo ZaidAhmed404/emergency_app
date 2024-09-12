@@ -17,4 +17,17 @@ class Messages {
 
   String locationPermissionDeniedMessage = "Location permissions are denied";
   String locationServicesDisabledMessage = "Location services are disabled.";
+  String userSignedOutMessage = "You’ve successfully logged out! 😊";
+  String emailSentMessage =
+      "Verification Email has been sent successfully! 📧✨";
+  String successRequestSentMessage =
+      "🎉 Thank you! Your contact request has been sent successfully. 😊";
+  String requestAlreadySentMessage =
+      "You've already submitted this request. Please wait for a response.";
+
+  String requestRejectedMessage =
+      "Contact request has been successfully declined.";
+
+  String acceptedRequestMessage =
+      "Contact request has been successfully accepted.";
 }

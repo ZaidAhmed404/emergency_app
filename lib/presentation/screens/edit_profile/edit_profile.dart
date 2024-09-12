@@ -95,6 +95,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   children: [
                     IconButtonWidget(
                       icon: Icons.arrow_back,
+                      isFilled: true,
                       onPressedFunction: () {
                         Navigator.pop(context);
                       },
@@ -106,6 +107,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     ),
                     IconButtonWidget(
                       icon: Icons.edit,
+                      isFilled: true,
                       onPressedFunction: () {
                         if (isEditing == true) {
                           isEditing = false;

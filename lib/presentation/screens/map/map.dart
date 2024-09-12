@@ -5,6 +5,7 @@ import 'package:emergency_app/presentation/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -60,32 +61,48 @@ class MapSampleState extends State<MapScreen> {
     getCurrentPosition();
   }
 
+  bool isLoading = false;
+
   getCurrentPosition() async {
+    setState(() {
+      isLoading = true;
+    });
     _currentPosition = await _determinePosition();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        circles: {
-          Circle(
-              circleId: const CircleId('1'),
-              center: LatLng(
-                _currentPosition!.latitude,
-                _currentPosition!.longitude,
-              ),
-              radius: 500,
-              fillColor: const Color.fromARGB(59, 33, 149, 243),
-              strokeWidth: 2,
-              strokeColor: const Color.fromARGB(202, 255, 255, 255))
-        },
-      ),
+      body: isLoading
+          ? Center(
+              child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Lottie.asset('assets/lottie/loading.json')),
+            )
+          : GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              circles: {
+                if (isLoading == false)
+                  Circle(
+                      circleId: const CircleId('1'),
+                      center: LatLng(
+                        _currentPosition!.latitude,
+                        _currentPosition!.longitude,
+                      ),
+                      radius: 500,
+                      fillColor: const Color.fromARGB(59, 33, 149, 243),
+                      strokeWidth: 2,
+                      strokeColor: const Color.fromARGB(202, 255, 255, 255))
+              },
+            ),
     );
   }
 }

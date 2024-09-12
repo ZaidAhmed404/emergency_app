@@ -1,6 +1,7 @@
 import 'package:emergency_app/data/models/user_model.dart';
 import 'package:emergency_app/domain/services/email_services.dart';
 import 'package:emergency_app/presentation/screens/complete_profile/complete_profile.dart';
+import 'package:emergency_app/presentation/screens/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,8 +20,6 @@ class UserController {
   final EmailServices emailServices;
 
   final Messages _messages = Messages();
-
-  User? user = FirebaseAuth.instance.currentUser;
 
   UserController(
       {required this.userRepository,
@@ -76,6 +75,8 @@ class UserController {
   Future handleSendVerificationEmail() async {
     try {
       await emailServices.sendVerificationEmail();
+
+      toastWidget(isError: false, message: _messages.emailSentMessage);
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
     }
@@ -83,14 +84,17 @@ class UserController {
 
   Future initializeSetting(WidgetRef ref) async {
     UserModel? userModel = await userRepository.getUserData();
-    if (userModel == null) {
+    if (FirebaseAuth.instance.currentUser?.uid == null) {
+      navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
+    } else if (userModel == null) {
       navigatorKey.currentState
           ?.pushReplacementNamed(CompleteProfileScreen.routeName);
     } else {
       final userNotifier = ref.watch(userNotifierProvider.notifier);
       userNotifier.updateUserModel(userModel: userModel);
 
-      if (user != null && !user!.emailVerified) {
+      if (FirebaseAuth.instance.currentUser != null &&
+          !FirebaseAuth.instance.currentUser!.emailVerified) {
         toastWidget(
             isError: false, message: _messages.emailVerificationMessage);
         navigatorKey.currentState

@@ -54,6 +54,7 @@ class ProfileItemWidget extends ConsumerWidget {
         const Spacer(),
         IconButtonWidget(
           icon: Icons.arrow_forward_ios_rounded,
+          isFilled: true,
           onPressedFunction: () {
             navigatorKey.currentState?.pushNamed(EditProfileScreen.routeName);
           },

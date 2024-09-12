@@ -1,5 +1,4 @@
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/messages.dart';
@@ -17,7 +16,6 @@ class AuthController {
   final UserController userController;
 
   final Messages _messages = Messages();
-  User? user = FirebaseAuth.instance.currentUser;
 
   AuthController(
       {required this.authRepository,
@@ -61,7 +59,7 @@ class AuthController {
       bool isSuccess = await authRepository.signInWithEmail(email, password);
       if (isSuccess) {
         await emailServices.sendVerificationEmail();
-        userController.initializeSetting(ref);
+        await userController.initializeSetting(ref);
       }
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
@@ -74,6 +72,7 @@ class AuthController {
       if (isSuccess == true) {
         navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
       }
+      toastWidget(isError: false, message: _messages.userSignedOutMessage);
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
     }
@@ -87,7 +86,7 @@ class AuthController {
   Future handleSignInWithGoogle({required WidgetRef ref}) async {
     try {
       await authRepository.signInWithGoogle();
-      userController.initializeSetting(ref);
+      await userController.initializeSetting(ref);
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
     }

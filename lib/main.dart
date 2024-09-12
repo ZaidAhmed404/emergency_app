@@ -5,6 +5,7 @@ import 'package:emergency_app/presentation/screens/email_verification/email_veri
 import 'package:emergency_app/presentation/screens/forgot_password/forgot_password.dart';
 import 'package:emergency_app/presentation/screens/home/home.dart';
 import 'package:emergency_app/presentation/screens/login/login.dart';
+import 'package:emergency_app/presentation/screens/search_contacts/search_contacts.dart';
 import 'package:emergency_app/presentation/screens/signup/signup.dart';
 import 'package:emergency_app/presentation/screens/splash/splash.dart';
 import 'package:emergency_app/routes/custom_page_route.dart';
@@ -60,6 +61,8 @@ class MyApp extends ConsumerWidget {
             return CustomPageRoute(child: EmailVerificationScreen());
           case CompleteProfileScreen.routeName:
             return CustomPageRoute(child: CompleteProfileScreen());
+          case SearchContactsScreen.routeName:
+            return CustomPageRoute(child: SearchContactsScreen());
           default:
             return null;
         }

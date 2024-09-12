@@ -26,6 +26,7 @@ class AboutScreen extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     iconSize: 20,
+                    isFilled: true,
                   ),
                   const Spacer(),
                   HeadingTextWidget(

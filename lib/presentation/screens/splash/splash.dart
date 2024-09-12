@@ -22,8 +22,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _userController.initializeSetting(ref);
+      initialize();
     });
+  }
+
+  Future initialize() async {
+    await _userController.initializeSetting(ref);
   }
 
   @override

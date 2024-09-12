@@ -21,9 +21,6 @@ class SettingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
             HeadingTextWidget(
               heading: "Account",
               fontSize: 25,
