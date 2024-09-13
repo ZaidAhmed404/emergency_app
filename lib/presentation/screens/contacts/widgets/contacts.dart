@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emergency_app/presentation/provider/user_provider.dart';
+import 'package:emergency_app/routes/custom_page_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,14 +14,14 @@ import '../../../controllers/chat_message_controller.dart';
 import '../../../widgets/icon_button.dart';
 import '../../chat/chat.dart';
 
-class Contacts extends StatelessWidget {
+class Contacts extends ConsumerWidget {
   Contacts({super.key});
 
   final ChatMessageController _chatMessageController =
       GetIt.I<ChatMessageController>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -120,9 +123,15 @@ class Contacts extends StatelessWidget {
                                               otherUserId: cont.userId);
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
+                                        CustomPageRoute(
+                                          child: ChatScreen(
                                             chatRoomId: chatRoomId,
+                                            senderName: ref
+                                                .watch(userNotifierProvider)
+                                                .userName,
+                                            senderPhotoUrl: ref
+                                                .watch(userNotifierProvider)
+                                                .photoUrl,
                                           ),
                                         ),
                                       );
