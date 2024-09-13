@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/data/models/request_model.dart';
 import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
 import 'package:emergency_app/presentation/provider/screen_provider.dart';
+import 'package:emergency_app/presentation/provider/user_provider.dart';
 import 'package:emergency_app/presentation/widgets/overlay_loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +47,8 @@ class Requests extends ConsumerWidget {
                   );
                 }
 
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
                 final data = snapshot.data?.data() as Map<String, dynamic>?;
-                List requests = data?['requests'];
+                List requests = data?['requests'] ?? [];
                 List<RequestModel> requestsModel = [];
 
                 for (int index = 0; index < requests.length; index++) {
@@ -129,7 +127,16 @@ class Requests extends ConsumerWidget {
                                                 userName: req.senderUserName,
                                                 photoUrl: req.senderPhotoUrl,
                                                 phoneNumber:
-                                                    req.senderPhoneNumber);
+                                                    req.senderPhoneNumber,
+                                                uUserName: ref
+                                                    .watch(userNotifierProvider)
+                                                    .userName,
+                                                uPhotoUrl: ref
+                                                    .watch(userNotifierProvider)
+                                                    .photoUrl,
+                                                uPhotoNumber: ref
+                                                    .watch(userNotifierProvider)
+                                                    .phoneNumber);
                                         screenNotifier.updateLoading(
                                             isLoading: false);
                                       },

@@ -48,14 +48,20 @@ class ContactsController {
       required String userId,
       required String userName,
       required String photoUrl,
-      required String phoneNumber}) async {
+      required String phoneNumber,
+      required String uUserName,
+      required String uPhotoUrl,
+      required String uPhotoNumber}) async {
     try {
       await contactRepository.rejectContactRequest(index: index);
       final isSuccess = await contactRepository.acceptContact(
           userId: userId,
           userName: userName,
           photoUrl: photoUrl,
-          phoneNumber: phoneNumber);
+          phoneNumber: phoneNumber,
+          uPhotoNumber: uPhotoNumber,
+          uPhotoUrl: uPhotoUrl,
+          uUserName: uUserName);
       if (isSuccess) {
         toastWidget(isError: false, message: _messages.acceptedRequestMessage);
       }

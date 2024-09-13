@@ -1,4 +1,7 @@
+import 'package:emergency_app/data/repositories_impl/chat_repository_impl.dart';
 import 'package:emergency_app/data/repositories_impl/contact_repository_impl.dart';
+import 'package:emergency_app/domain/services_impl/chat_services_impl.dart';
+import 'package:emergency_app/presentation/controllers/chat_message_controller.dart';
 import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
@@ -48,4 +51,11 @@ void setupDependencyInjection() {
 
   getIt.registerFactory<ContactsController>(
       () => ContactsController(getIt<ContactRepositoryImpl>()));
+
+  getIt.registerLazySingleton<ChatServicesImpl>(() => ChatServicesImpl());
+  getIt.registerLazySingleton<ChatRepositoryImpl>(() => ChatRepositoryImpl());
+
+  getIt.registerFactory<ChatMessageController>(() => ChatMessageController(
+      chatServices: getIt<ChatServicesImpl>(),
+      chatRepository: getIt<ChatRepositoryImpl>()));
 }

@@ -12,5 +12,8 @@ abstract class ContactRepository {
       {required String userId,
       required String userName,
       required String photoUrl,
-      required String phoneNumber});
+      required String phoneNumber,
+      required String uUserName,
+      required String uPhotoUrl,
+      required String uPhotoNumber});
 }

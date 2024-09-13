@@ -3,12 +3,19 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../data/models/contact_model.dart';
+import '../../../controllers/chat_message_controller.dart';
+import '../../../widgets/icon_button.dart';
+import '../../chat/chat.dart';
 
 class Contacts extends StatelessWidget {
-  const Contacts({super.key});
+  Contacts({super.key});
+
+  final ChatMessageController _chatMessageController =
+      GetIt.I<ChatMessageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,7 @@ class Contacts extends StatelessWidget {
                 return Text('Error: ${snapshot.error}');
               }
               final data = snapshot.data?.data() as Map<String, dynamic>?;
-              List requests = data?['contacts'];
+              List requests = data?['contacts'] ?? [];
               List<ContactModel> contactsModel = [];
 
               for (int index = 0; index < requests.length; index++) {
@@ -101,6 +108,27 @@ class Contacts extends StatelessWidget {
                                     ],
                                   ),
                                   const Spacer(),
+                                  IconButtonWidget(
+                                    icon: Icons.message,
+                                    isFilled: false,
+                                    onPressedFunction: () {
+                                      _chatMessageController
+                                          .handleCreatingChatRoom(
+                                              otherUserId: cont.userId);
+                                      String chatRoomId =
+                                          _chatMessageController.getChatRoomId(
+                                              otherUserId: cont.userId);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ChatScreen(
+                                            chatRoomId: chatRoomId,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    iconSize: 15,
+                                  ),
                                 ],
                               ),
                             );
