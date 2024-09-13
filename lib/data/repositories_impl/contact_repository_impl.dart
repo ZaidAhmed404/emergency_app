@@ -111,7 +111,7 @@ class ContactRepositoryImpl extends ContactRepository {
       }
       if (documentSnapshot.exists) {
         var data = documentSnapshot.data() as Map<String, dynamic>?;
-        List contacts = data?['contacts'];
+        List contacts = data?['contacts'] ?? [];
         contacts.add({
           "userId": userId,
           "userName": userName,
@@ -129,12 +129,12 @@ class ContactRepositoryImpl extends ContactRepository {
         }
 
         data = documentSnapshot.data() as Map<String, dynamic>?;
-        contacts = data?['contacts'];
+        contacts = data?['contacts'] ?? [];
         contacts.add({
           "userId": FirebaseAuth.instance.currentUser!.uid,
-          "userName": userName,
-          "photoUrl": photoUrl,
-          "phoneNumber": phoneNumber,
+          "userName": uUserName,
+          "photoUrl": uPhotoUrl,
+          "phoneNumber": uPhotoNumber,
           "isEmergencyContact": false
         });
         await contactCollectionReference
