@@ -51,6 +51,8 @@ dependencies:
   google_sign_in: ^6.2.1
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
+  zego_uikit_prebuilt_call: ^4.15.9
+  zego_uikit_signaling_plugin: ^2.8.3
 
 dev_dependencies:
   flutter_test:

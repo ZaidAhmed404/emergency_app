@@ -42,7 +42,7 @@ class Message extends StatelessWidget {
                   BoxShadow(
                     color: Colors.blueAccent.withOpacity(0.3),
                     blurRadius: 2,
-                    offset: const Offset(0, 6),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -59,11 +59,11 @@ class Message extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: -20,
+            top: -15,
             left: condition ? null : 10,
             right: condition ? 10 : null,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (condition == false)
                   ClipOval(

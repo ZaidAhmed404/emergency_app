@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../data/models/contact_model.dart';
 import '../../../controllers/chat_message_controller.dart';
 import '../../../controllers/contacts_controller.dart';
+import 'call_button.dart';
 
 class Contacts extends ConsumerWidget {
   Contacts({super.key});
@@ -98,6 +99,21 @@ class Contacts extends ConsumerWidget {
                                     ],
                                   ),
                                   const Spacer(),
+                                  CallButtonWidget(
+                                    isVideoCall: false,
+                                    targetUserId: cont.userId,
+                                    targetUserName: cont.userName,
+                                    targetUserPhotoUrl: cont.photoUrl,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  CallButtonWidget(
+                                    isVideoCall: true,
+                                    targetUserId: cont.userId,
+                                    targetUserName: cont.userName,
+                                    targetUserPhotoUrl: cont.photoUrl,
+                                  ),
                                 ],
                               ),
                             );

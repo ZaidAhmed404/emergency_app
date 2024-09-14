@@ -4,6 +4,8 @@ import 'package:emergency_app/presentation/screens/complete_profile/complete_pro
 import 'package:emergency_app/presentation/screens/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import '../../core/messages.dart';
 import '../../data/repositories/storage_repository.dart';
@@ -100,6 +102,14 @@ class UserController {
         navigatorKey.currentState
             ?.pushReplacementNamed(EmailVerificationScreen.routeName);
       } else {
+        ZegoUIKitPrebuiltCallInvitationService().init(
+          appID: 501718067,
+          appSign:
+              "d1dba58d9d0b63c472c182d25338a850fa32a61a47e23807de8f0e6179692c36",
+          userID: FirebaseAuth.instance.currentUser!.uid,
+          userName: ref.watch(userNotifierProvider).userName,
+          plugins: [ZegoUIKitSignalingPlugin()],
+        );
         toastWidget(isError: false, message: _messages.successfulLogin);
 
         navigatorKey.currentState?.pushReplacementNamed(HomeScreen.routeName);
