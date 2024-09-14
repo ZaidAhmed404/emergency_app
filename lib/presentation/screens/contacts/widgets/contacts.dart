@@ -1,16 +1,12 @@
-import 'package:emergency_app/presentation/provider/user_provider.dart';
-import 'package:emergency_app/routes/custom_page_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../data/models/contact_model.dart';
-import '../controllers/chat_message_controller.dart';
-import '../controllers/contacts_controller.dart';
-import '../screens/chat/chat.dart';
-import 'icon_button.dart';
+import '../../../../data/models/contact_model.dart';
+import '../../../controllers/chat_message_controller.dart';
+import '../../../controllers/contacts_controller.dart';
 
 class Contacts extends ConsumerWidget {
   Contacts({super.key});
@@ -102,33 +98,6 @@ class Contacts extends ConsumerWidget {
                                     ],
                                   ),
                                   const Spacer(),
-                                  IconButtonWidget(
-                                    icon: Icons.message,
-                                    isFilled: false,
-                                    onPressedFunction: () {
-                                      _chatMessageController
-                                          .handleCreatingChatRoom(
-                                              otherUserId: cont.userId);
-                                      String chatRoomId =
-                                          _chatMessageController.getChatRoomId(
-                                              otherUserId: cont.userId);
-                                      Navigator.push(
-                                        context,
-                                        CustomPageRoute(
-                                          child: ChatScreen(
-                                            chatRoomId: chatRoomId,
-                                            senderName: ref
-                                                .watch(userNotifierProvider)
-                                                .userName,
-                                            senderPhotoUrl: ref
-                                                .watch(userNotifierProvider)
-                                                .photoUrl,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    iconSize: 15,
-                                  ),
                                 ],
                               ),
                             );
