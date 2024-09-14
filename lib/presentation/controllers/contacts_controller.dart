@@ -1,6 +1,7 @@
 import 'package:emergency_app/data/repositories/contact_repository.dart';
 
 import '../../core/messages.dart';
+import '../../data/models/contact_model.dart';
 import '../../data/models/request_model.dart';
 import '../widgets/toast.dart';
 
@@ -36,6 +37,10 @@ class ContactsController {
     return contactRepository.getRequests(docId);
   }
 
+  Stream<List<ContactModel>> handleGetContacts(String docId) {
+    return contactRepository.getContacts(docId);
+  }
+
   Future handleRejectContactRequest({required String docId}) async {
     try {
       final isSuccess =
@@ -58,16 +63,21 @@ class ContactsController {
       required String uPhotoUrl,
       required String uPhotoNumber}) async {
     try {
-      final isSuccess = await contactRepository.acceptContact(
-          userId: userId,
-          userName: userName,
-          photoUrl: photoUrl,
-          phoneNumber: phoneNumber,
-          uPhotoNumber: uPhotoNumber,
-          uPhotoUrl: uPhotoUrl,
-          uUserName: uUserName);
+      bool isSuccess =
+          await contactRepository.rejectContactRequest(docId: docId);
       if (isSuccess) {
-        toastWidget(isError: false, message: _messages.acceptedRequestMessage);
+        isSuccess = await contactRepository.acceptContact(
+            userId: userId,
+            userName: userName,
+            photoUrl: photoUrl,
+            phoneNumber: phoneNumber,
+            uPhotoNumber: uPhotoNumber,
+            uPhotoUrl: uPhotoUrl,
+            uUserName: uUserName);
+        if (isSuccess) {
+          toastWidget(
+              isError: false, message: _messages.acceptedRequestMessage);
+        }
       }
     } catch (error) {
       toastWidget(isError: true, message: error.toString());

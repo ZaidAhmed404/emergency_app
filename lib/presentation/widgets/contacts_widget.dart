@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/presentation/provider/user_provider.dart';
 import 'package:emergency_app/routes/custom_page_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,10 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../data/models/contact_model.dart';
-import '../../../controllers/chat_message_controller.dart';
-import '../../../widgets/icon_button.dart';
-import '../../chat/chat.dart';
+import '../../data/models/contact_model.dart';
+import '../controllers/chat_message_controller.dart';
+import '../controllers/contacts_controller.dart';
+import '../screens/chat/chat.dart';
+import 'icon_button.dart';
 
 class Contacts extends ConsumerWidget {
   Contacts({super.key});
@@ -20,17 +18,17 @@ class Contacts extends ConsumerWidget {
   final ChatMessageController _chatMessageController =
       GetIt.I<ChatMessageController>();
 
+  final ContactsController _contactsController = GetIt.I<ContactsController>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.33,
         child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('contacts')
-                .doc(FirebaseAuth.instance.currentUser?.uid)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            stream: _contactsController
+                .handleGetContacts(FirebaseAuth.instance.currentUser!.uid),
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: SizedBox(
@@ -45,19 +43,12 @@ class Contacts extends ConsumerWidget {
               }
 
               if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return const Center(child: Text('Something Went Wrong!!!'));
               }
-              final data = snapshot.data?.data() as Map<String, dynamic>?;
-              List requests = data?['contacts'] ?? [];
-              List<ContactModel> contactsModel = [];
-
-              for (int index = 0; index < requests.length; index++) {
-                log("${requests[index]}");
-                contactsModel.add(ContactModel.fromMap(requests[index], index));
-              }
+              final contacts = snapshot.data!;
 
               return SizedBox(
-                  child: contactsModel.isEmpty
+                  child: contacts.isEmpty
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,9 +61,9 @@ class Contacts extends ConsumerWidget {
                           ],
                         )
                       : ListView.builder(
-                          itemCount: contactsModel.length,
+                          itemCount: contacts.length,
                           itemBuilder: (context, index) {
-                            ContactModel cont = contactsModel[index];
+                            ContactModel cont = contacts[index];
                             return Container(
                               margin: const EdgeInsets.only(top: 10),
                               child: Row(

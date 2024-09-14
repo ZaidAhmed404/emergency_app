@@ -4,7 +4,7 @@ class ContactModel {
   final String photoUrl;
   final String userName;
   final bool isEmergencyContact;
-  final int index;
+  final String docId;
 
   ContactModel({
     required this.userId,
@@ -12,17 +12,17 @@ class ContactModel {
     required this.photoUrl,
     required this.isEmergencyContact,
     required this.userName,
-    required this.index,
+    required this.docId,
   });
 
-  factory ContactModel.fromMap(Map<String, dynamic> map, int newIndex) {
+  factory ContactModel.fromMap(Map<String, dynamic> map, String newDocId) {
     return ContactModel(
       userId: map['userId'] as String,
       phoneNumber: map['phoneNumber'] as String,
       photoUrl: map['photoUrl'] as String,
       userName: map['userName'] as String,
       isEmergencyContact: map['isEmergencyContact'] as bool,
-      index: newIndex,
+      docId: newDocId,
     );
   }
 }

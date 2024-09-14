@@ -39,6 +39,10 @@ class Requests extends ConsumerWidget {
                 );
               }
 
+              if (snapshot.hasError) {
+                return const Center(child: Text('Something Went Wrong!!!'));
+              }
+
               final requests = snapshot.data!;
 
               return SizedBox(

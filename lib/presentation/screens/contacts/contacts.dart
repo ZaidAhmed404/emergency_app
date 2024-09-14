@@ -1,6 +1,6 @@
-import 'package:emergency_app/presentation/screens/contacts/widgets/contacts.dart';
 import 'package:emergency_app/presentation/screens/contacts/widgets/requests.dart';
 import 'package:emergency_app/presentation/screens/search_contacts/search_contacts.dart';
+import 'package:emergency_app/presentation/widgets/contacts_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

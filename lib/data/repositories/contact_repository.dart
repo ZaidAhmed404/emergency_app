@@ -1,5 +1,7 @@
 import 'package:emergency_app/data/models/request_model.dart';
 
+import '../models/contact_model.dart';
+
 abstract class ContactRepository {
   Future requestContact({
     required String senderPhotoUrl,
@@ -11,6 +13,8 @@ abstract class ContactRepository {
   Future<bool> rejectContactRequest({required String docId});
 
   Stream<List<RequestModel>> getRequests(String docId);
+
+  Stream<List<ContactModel>> getContacts(String docId);
 
   Future<bool> acceptContact(
       {required String userId,
