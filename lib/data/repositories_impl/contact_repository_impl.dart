@@ -5,6 +5,7 @@ import 'package:emergency_app/data/repositories/contact_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../core/messages.dart';
+import '../models/request_model.dart';
 
 class ContactRepositoryImpl extends ContactRepository {
   final firebaseAuth = FirebaseAuth.instance;
@@ -22,40 +23,31 @@ class ContactRepositoryImpl extends ContactRepository {
   }) async {
     bool found = false;
     try {
-      DocumentSnapshot documentSnapshot =
-          await contactCollectionReference.doc(receiverId).get();
-      if (!documentSnapshot.exists) {
-        await _initializeContacts(userId: receiverId);
-      }
-
-      documentSnapshot = await contactCollectionReference.doc(receiverId).get();
-
-      final data = documentSnapshot.data() as Map<String, dynamic>?;
-
-      List requests = data?['requests'];
-      for (int index = 0; index < requests.length; index++) {
-        if (requests[index]['senderId'] ==
+      QuerySnapshot<Map<String, dynamic>> requests =
+          await contactCollectionReference
+              .doc(receiverId)
+              .collection('requests')
+              .get();
+      for (int index = 0; index < requests.docs.length; index++) {
+        if (requests.docs[index].data()['senderId'] ==
             FirebaseAuth.instance.currentUser?.uid) {
           found = true;
-          break;
+          throw "";
         }
       }
-      if (found) {
-        throw "";
-      }
-      requests.add({
+
+      await contactCollectionReference
+          .doc(receiverId)
+          .collection('requests')
+          .add({
         "senderId": FirebaseAuth.instance.currentUser?.uid,
         "senderUserName": senderUserName,
         "senderPhotoUrl": senderPhotoUrl,
         "senderPhoneNumber": senderPhoneNumber
       });
 
-      await contactCollectionReference
-          .doc(receiverId)
-          .update({"requests": requests});
-
       return true;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       log("${e.message}", name: "error");
       throw ("${e.message}");
     } catch (error) {
@@ -68,22 +60,27 @@ class ContactRepositoryImpl extends ContactRepository {
   }
 
   @override
-  Future<bool> rejectContactRequest({required int index}) async {
+  Stream<List<RequestModel>> getRequests(String docId) {
+    return contactCollectionReference
+        .doc(docId)
+        .collection('requests')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => RequestModel.fromMap(doc.data(), doc.id))
+            .toList());
+  }
+
+  @override
+  Future<bool> rejectContactRequest({required String docId}) async {
     try {
-      DocumentSnapshot documentSnapshot = await contactCollectionReference
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .get();
-      if (documentSnapshot.exists) {
-        final data = documentSnapshot.data() as Map<String, dynamic>?;
-        List requests = data?['requests'];
-        requests.removeAt(index);
-        await contactCollectionReference
-            .doc(FirebaseAuth.instance.currentUser?.uid)
-            .update({"requests": requests});
-        return true;
-      }
-      return false;
-    } on FirebaseAuthException catch (e) {
+      await contactCollectionReference
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('requests')
+          .doc(docId)
+          .delete();
+
+      return true;
+    } on FirebaseException catch (e) {
       log("${e.message}", name: "error");
       throw ("${e.message}");
     } catch (error) {
@@ -144,7 +141,7 @@ class ContactRepositoryImpl extends ContactRepository {
         return true;
       }
       return false;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       log("${e.message}", name: "error");
       throw ("${e.message}");
     } catch (error) {

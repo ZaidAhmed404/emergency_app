@@ -25,9 +25,10 @@ class LoginScreen extends ConsumerWidget {
     final screenNotifier = ref.watch(screenNotifierProvider.notifier);
 
     return Scaffold(
-      body: OverlayLoadingWidget(
-        isLoading: ref.watch(screenNotifierProvider),
-        child: SafeArea(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: OverlayLoadingWidget(
+          isLoading: ref.watch(screenNotifierProvider),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(

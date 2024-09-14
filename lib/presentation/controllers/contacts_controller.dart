@@ -1,6 +1,7 @@
 import 'package:emergency_app/data/repositories/contact_repository.dart';
 
 import '../../core/messages.dart';
+import '../../data/models/request_model.dart';
 import '../widgets/toast.dart';
 
 class ContactsController {
@@ -31,10 +32,14 @@ class ContactsController {
     }
   }
 
-  Future handleRejectContactRequest({required int index}) async {
+  Stream<List<RequestModel>> handleGetRequests(String docId) {
+    return contactRepository.getRequests(docId);
+  }
+
+  Future handleRejectContactRequest({required String docId}) async {
     try {
       final isSuccess =
-          await contactRepository.rejectContactRequest(index: index);
+          await contactRepository.rejectContactRequest(docId: docId);
       if (isSuccess) {
         toastWidget(isError: false, message: _messages.requestRejectedMessage);
       }
@@ -44,7 +49,7 @@ class ContactsController {
   }
 
   Future handleAcceptRequestContactRequest(
-      {required int index,
+      {required String docId,
       required String userId,
       required String userName,
       required String photoUrl,
@@ -53,7 +58,6 @@ class ContactsController {
       required String uPhotoUrl,
       required String uPhotoNumber}) async {
     try {
-      await contactRepository.rejectContactRequest(index: index);
       final isSuccess = await contactRepository.acceptContact(
           userId: userId,
           userName: userName,

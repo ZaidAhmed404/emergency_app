@@ -1,16 +1,13 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/data/models/request_model.dart';
 import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
 import 'package:emergency_app/presentation/provider/screen_provider.dart';
-import 'package:emergency_app/presentation/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../provider/user_provider.dart';
 import '../../../widgets/icon_button.dart';
 
 class Requests extends ConsumerWidget {
@@ -24,13 +21,11 @@ class Requests extends ConsumerWidget {
 
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.35,
-        child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('contacts')
-                .doc(FirebaseAuth.instance.currentUser?.uid)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        height: MediaQuery.of(context).size.height * 0.33,
+        child: StreamBuilder<List<RequestModel>>(
+            stream: _contactsController
+                .handleGetRequests(FirebaseAuth.instance.currentUser!.uid),
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: SizedBox(
@@ -44,17 +39,10 @@ class Requests extends ConsumerWidget {
                 );
               }
 
-              final data = snapshot.data?.data() as Map<String, dynamic>?;
-              List requests = data?['requests'] ?? [];
-              List<RequestModel> requestsModel = [];
-
-              for (int index = 0; index < requests.length; index++) {
-                log("${requests[index]}");
-                requestsModel.add(RequestModel.fromMap(requests[index], index));
-              }
+              final requests = snapshot.data!;
 
               return SizedBox(
-                  child: requestsModel.isEmpty
+                  child: requests.isEmpty
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,9 +55,9 @@ class Requests extends ConsumerWidget {
                           ],
                         )
                       : ListView.builder(
-                          itemCount: requestsModel.length,
+                          itemCount: requests.length,
                           itemBuilder: (context, index) {
-                            RequestModel req = requestsModel[index];
+                            RequestModel req = requests[index];
                             return Container(
                               margin: const EdgeInsets.only(top: 10),
                               child: Row(
@@ -117,7 +105,7 @@ class Requests extends ConsumerWidget {
 
                                       await _contactsController
                                           .handleAcceptRequestContactRequest(
-                                              index: index,
+                                              docId: req.docId,
                                               userId: req.senderId,
                                               userName: req.senderUserName,
                                               photoUrl: req.senderPhotoUrl,
@@ -149,7 +137,7 @@ class Requests extends ConsumerWidget {
 
                                       await _contactsController
                                           .handleRejectContactRequest(
-                                              index: index);
+                                              docId: req.docId);
                                       screenNotifier.updateLoading(
                                           isLoading: false);
                                     },

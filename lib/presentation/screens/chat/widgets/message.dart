@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Message extends StatelessWidget {
   final String name;
@@ -65,15 +66,21 @@ class Message extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (condition == false)
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor:
-                        condition ? Colors.white : Colors.blueAccent,
-                    child: Icon(
-                      Icons.person,
-                      color: condition ? Colors.blueAccent : Colors.white,
-                    ),
-                  ),
+                  ClipOval(
+                      child: SizedBox.fromSize(
+                    size: const Size.fromRadius(20),
+                    child: Image.network(imageUrl, fit: BoxFit.fill,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Lottie.asset('assets/lottie/loading.json'));
+                    }),
+                  )),
                 const SizedBox(
                   width: 10,
                 ),
@@ -89,15 +96,21 @@ class Message extends StatelessWidget {
                   width: 5,
                 ),
                 if (condition)
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor:
-                        condition ? Colors.white : Colors.blueAccent,
-                    child: Icon(
-                      Icons.person,
-                      color: condition ? Colors.blueAccent : Colors.white,
-                    ),
-                  ),
+                  ClipOval(
+                      child: SizedBox.fromSize(
+                    size: const Size.fromRadius(20),
+                    child: Image.network(imageUrl, fit: BoxFit.fill,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Lottie.asset('assets/lottie/loading.json'));
+                    }),
+                  )),
               ],
             ),
           ),

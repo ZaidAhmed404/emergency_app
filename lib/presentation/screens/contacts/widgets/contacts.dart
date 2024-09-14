@@ -24,7 +24,7 @@ class Contacts extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.33,
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('contacts')
