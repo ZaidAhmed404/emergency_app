@@ -20,7 +20,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   List<Map> cards = [
     {'title': 'Theft Spotted', 'body': 'He Got Robbed Help Him'},
     {'title': 'I Have Accident', 'body': 'Accident Spotted Help Him'},
-    {'title': 'I Am Injured', 'body': 'Help Him He is Injued'},
+    {'title': 'I Am Injured', 'body': 'Help Him He is Injured'},
     {'title': 'Petrol Need', 'body': 'He Need Petrol Help Him'},
   ];
 
