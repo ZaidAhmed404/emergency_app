@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:emergency_app/presentation/screens/emergency/widgets/category_card.dart';
 import 'package:flutter/material.dart';
-import 'package:twilio_flutter/twilio_flutter.dart';
 
 import '../../widgets/heading_text.dart';
 
@@ -14,16 +11,10 @@ class EmergencyScreen extends StatefulWidget {
 }
 
 class _EmergencyScreenState extends State<EmergencyScreen> {
-  TwilioFlutter? twilioFlutter;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    twilioFlutter = TwilioFlutter(
-        accountSid: 'AC909353b4c667a622d0515ae7909e8282',
-        authToken: '2a1aa1fe8957e44f640d51a6c300afc4',
-        twilioNumber: '+13612829068');
   }
 
   List<Map> cards = [
@@ -37,11 +28,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   String? selectedText;
   String? selectedBody;
 
-  sendSms() async {
-    final response = await twilioFlutter!
-        .sendSMS(toNumber: "+923174703741", messageBody: 'Hello World');
-    log("${response}");
-  }
+  sendSms() async {}
 
   @override
   Widget build(BuildContext context) {
