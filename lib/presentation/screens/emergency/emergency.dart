@@ -11,12 +11,6 @@ class EmergencyScreen extends StatefulWidget {
 }
 
 class _EmergencyScreenState extends State<EmergencyScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   List<Map> cards = [
     {'title': 'Theft Spotted', 'body': 'He Got Robbed Help Him'},
     {'title': 'I Have Accident', 'body': 'Accident Spotted Help Him'},
