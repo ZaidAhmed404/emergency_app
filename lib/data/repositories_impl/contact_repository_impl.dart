@@ -82,13 +82,23 @@ class ContactRepositoryImpl extends ContactRepository {
             .toList());
   }
 
-  Future updateEmergencyContact(
+  @override
+  Future<bool> updateEmergencyContact(
       {required String docId, required bool isEmergency}) async {
-    await contactCollectionReference
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('contacts')
-        .doc(docId)
-        .update({"isEmergencyContact": isEmergency});
+    try {
+      await contactCollectionReference
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('contacts')
+          .doc(docId)
+          .update({"isEmergencyContact": isEmergency});
+      return true;
+    } on FirebaseException catch (e) {
+      log("${e.message}", name: "error");
+      throw ("${e.message}");
+    } catch (error) {
+      log("$error", name: "error");
+      throw (_messages.tryAgainMessage);
+    }
   }
 
   @override

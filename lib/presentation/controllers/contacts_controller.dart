@@ -83,4 +83,19 @@ class ContactsController {
       toastWidget(isError: true, message: error.toString());
     }
   }
+
+  Future handleChangingEmergencyContact(
+      {required String docId, required bool isEmergency}) async {
+    try {
+      final isSuccess = await contactRepository.updateEmergencyContact(
+          docId: docId, isEmergency: isEmergency);
+      if (isSuccess) {
+        toastWidget(
+            isError: false,
+            message: _messages.emergencyContactAddedSuccessMessage);
+      }
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+    }
+  }
 }

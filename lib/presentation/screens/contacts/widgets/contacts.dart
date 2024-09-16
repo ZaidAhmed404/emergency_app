@@ -6,20 +6,19 @@ import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../data/models/contact_model.dart';
-import '../../../controllers/chat_message_controller.dart';
 import '../../../controllers/contacts_controller.dart';
+import '../../../provider/screen_provider.dart';
 import 'call_button.dart';
 
 class Contacts extends ConsumerWidget {
   Contacts({super.key});
 
-  final ChatMessageController _chatMessageController =
-      GetIt.I<ChatMessageController>();
-
   final ContactsController _contactsController = GetIt.I<ContactsController>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenNotifier = ref.watch(screenNotifierProvider.notifier);
+
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.33,
@@ -99,7 +98,17 @@ class Contacts extends ConsumerWidget {
                                                 onCancelFunction: () {
                                                   Navigator.pop(context);
                                                 },
-                                                onConfirmFunction: () {},
+                                                onConfirmFunction: () async {
+                                                  Navigator.pop(context);
+                                                  screenNotifier.updateLoading(
+                                                      isLoading: true);
+                                                  await _contactsController
+                                                      .handleChangingEmergencyContact(
+                                                          docId: cont.docId,
+                                                          isEmergency: true);
+                                                  screenNotifier.updateLoading(
+                                                      isLoading: false);
+                                                },
                                               )));
                                     },
                                     child: Column(

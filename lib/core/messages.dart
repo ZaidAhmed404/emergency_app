@@ -30,4 +30,7 @@ class Messages {
 
   String acceptedRequestMessage =
       "Contact request has been successfully accepted.";
+
+  String emergencyContactAddedSuccessMessage =
+      "Your emergency contact has been added successfully!";
 }

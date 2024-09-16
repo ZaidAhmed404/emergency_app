@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:emergency_app/presentation/screens/emergency/widgets/category_card.dart';
 import 'package:flutter/material.dart';
+import 'package:telephony/telephony.dart';
 
 import '../../widgets/heading_text.dart';
 
@@ -18,11 +21,31 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     {'title': 'Petrol Need', 'body': 'He Need Petrol Help Him'},
   ];
 
+  final Telephony telephony = Telephony.instance;
+
   int _selectedCategoryIndex = 0;
   String? selectedText;
   String? selectedBody;
 
-  sendSms() async {}
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    askPermission();
+  }
+
+  askPermission() async {
+    await telephony.requestPhoneAndSmsPermissions;
+  }
+
+  sendSms() async {
+    final SmsSendStatusListener listener = (SendStatus status) {
+      log("${status}", name: 'status');
+    };
+
+    telephony.sendSms(
+        to: "+923174703741", message: "Hello World", statusListener: listener);
+  }
 
   @override
   Widget build(BuildContext context) {

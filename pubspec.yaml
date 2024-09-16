@@ -56,6 +56,7 @@ dependencies:
 
   shake: ^2.2.0
   firebase_messaging: ^14.7.10
+  telephony: ^0.2.0
 
 dev_dependencies:
   flutter_test:

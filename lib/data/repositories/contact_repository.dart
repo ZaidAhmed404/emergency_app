@@ -16,7 +16,7 @@ abstract class ContactRepository {
 
   Stream<List<ContactModel>> getContacts(String docId);
 
-  Future updateEmergencyContact(
+  Future<bool> updateEmergencyContact(
       {required String docId, required bool isEmergency});
 
   Future<List<ContactModel>> getEmergencyContacts(String docId);
