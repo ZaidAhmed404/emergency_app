@@ -111,7 +111,7 @@ class Contacts extends ConsumerWidget {
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Text(cont.phoneNumber),
+                                        Text(cont.phoneNumber)
                                       ],
                                     ),
                                   ),
