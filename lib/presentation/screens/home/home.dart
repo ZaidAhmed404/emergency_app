@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/color_constants.dart';
 import '../chat_contacts/chat_contacts.dart';
 import '../contacts/contacts.dart';
+import '../emergency/emergency.dart';
 import '../map/map.dart';
 import '../setting/setting.dart';
 
@@ -13,12 +14,9 @@ class HomeScreen extends StatefulWidget {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    MapScreen(),
-    ContactsScreen(),
+    EmergencyScreen(),
+    const MapScreen(),
+    const ContactsScreen(),
     ChatContactsScreen(),
     SettingScreen()
   ];

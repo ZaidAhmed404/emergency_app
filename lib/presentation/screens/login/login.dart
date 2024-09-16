@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../provider/screen_provider.dart';
+import '../../widgets/heading_text.dart';
 import '../../widgets/icon_text.dart';
 import '../../widgets/overlay_loading.dart';
 import '../../widgets/text_button.dart';
@@ -35,10 +36,7 @@ class LoginScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 28),
-                ),
+                HeadingTextWidget(heading: "Login", fontSize: 25),
                 const Spacer(),
                 Form(
                   key: _formKey,

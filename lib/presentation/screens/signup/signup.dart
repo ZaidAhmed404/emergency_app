@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
+import 'package:emergency_app/presentation/widgets/heading_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,10 +82,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   const SizedBox(
                     height: 50,
                   ),
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 28),
-                  ),
+                  HeadingTextWidget(heading: "Sign Up", fontSize: 25),
                   const SizedBox(
                     height: 50,
                   ),
