@@ -13,6 +13,7 @@ class UserNotifier extends Notifier<UserModel> {
         phoneNumber: "",
         photoUrl: "",
         userName: "",
+        token: "",
         uid: "");
   }
 

@@ -1,3 +1,3 @@
 abstract class EmailServices {
-  Future sendVerificationEmail();
+  Future<bool> sendVerificationEmail();
 }

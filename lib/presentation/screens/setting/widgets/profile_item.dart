@@ -45,9 +45,13 @@ class ProfileItemWidget extends ConsumerWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              FirebaseAuth.instance.currentUser!.email!,
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              child: Text(
+                FirebaseAuth.instance.currentUser!.email!,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 14, color: Colors.black54),
+              ),
             ),
           ],
         ),

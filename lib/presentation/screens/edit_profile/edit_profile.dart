@@ -292,7 +292,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                               .photoUrl,
                                       userName: _userNameController.text,
                                       uid: FirebaseAuth
-                                          .instance.currentUser!.uid));
+                                          .instance.currentUser!.uid,
+                                      token: ref
+                                          .watch(userNotifierProvider)
+                                          .token));
                         }
                         screenNotifier.updateLoading(isLoading: false);
                       },

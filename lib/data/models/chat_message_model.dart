@@ -27,10 +27,10 @@ class ChatMessageModel {
 
   factory ChatMessageModel.fromMap(Map<String, dynamic> map) {
     return ChatMessageModel(
-      senderId: map['senderId'],
-      message: map['message'],
-      senderName: map['senderName'],
-      senderPhotoUrl: map['senderPhotoUrl'],
+      senderId: map['senderId'] ?? "",
+      message: map['message'] ?? "",
+      senderName: map['senderName'] ?? "",
+      senderPhotoUrl: map['senderPhotoUrl'] ?? "",
       timestamp: (map['timestamp'] as Timestamp).toDate(),
     );
   }

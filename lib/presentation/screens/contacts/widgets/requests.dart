@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../provider/user_provider.dart';
+import '../../../widgets/confirmation_dialog.dart';
 import '../../../widgets/icon_button.dart';
 
 class Requests extends ConsumerWidget {
@@ -136,14 +137,33 @@ class Requests extends ConsumerWidget {
                                     icon: Icons.close,
                                     isFilled: true,
                                     onPressedFunction: () async {
-                                      screenNotifier.updateLoading(
-                                          isLoading: true);
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                                insetPadding:
+                                                    const EdgeInsets.all(20),
+                                                child: ConfirmationDialogWidget(
+                                                  message:
+                                                      "Are you sure you want to delete this request? This action can't be undone",
+                                                  title: "Confirmation Message",
+                                                  onCancelFunction: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  onConfirmFunction: () async {
+                                                    Navigator.pop(context);
+                                                    screenNotifier
+                                                        .updateLoading(
+                                                            isLoading: true);
 
-                                      await _contactsController
-                                          .handleRejectContactRequest(
-                                              docId: req.docId);
-                                      screenNotifier.updateLoading(
-                                          isLoading: false);
+                                                    await _contactsController
+                                                        .handleRejectContactRequest(
+                                                            docId: req.docId);
+                                                    screenNotifier
+                                                        .updateLoading(
+                                                            isLoading: false);
+                                                  },
+                                                ),
+                                              ));
                                     },
                                     iconSize: 15,
                                   ),

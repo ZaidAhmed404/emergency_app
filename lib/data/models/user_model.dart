@@ -5,15 +5,16 @@ class UserModel {
   String photoUrl;
   String userName;
   String uid;
+  String token;
 
-  UserModel({
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
-    required this.photoUrl,
-    required this.userName,
-    required this.uid,
-  });
+  UserModel(
+      {required this.firstName,
+      required this.lastName,
+      required this.phoneNumber,
+      required this.photoUrl,
+      required this.userName,
+      required this.uid,
+      required this.token});
 
   // From JSON
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +25,7 @@ class UserModel {
       photoUrl: json['photoUrl'] ?? '',
       userName: json['userName'] ?? '',
       uid: json['uid'] ?? '',
+      token: json['token'] ?? '',
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:emergency_app/presentation/screens/contacts/widgets/contact_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,17 +87,34 @@ class Contacts extends ConsumerWidget {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        cont.userName,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(cont.phoneNumber),
-                                    ],
+                                  InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                                insetPadding:
+                                                    const EdgeInsets.all(20),
+                                                child: ContactDetails(
+                                                  contactModel: cont,
+                                                  onCancelFunction: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  onConfirmFunction: () {},
+                                                ),
+                                              ));
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          cont.userName,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(cont.phoneNumber),
+                                      ],
+                                    ),
                                   ),
                                   const Spacer(),
                                   CallButtonWidget(

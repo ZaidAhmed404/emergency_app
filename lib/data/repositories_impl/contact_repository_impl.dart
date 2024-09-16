@@ -102,6 +102,19 @@ class ContactRepositoryImpl extends ContactRepository {
   }
 
   @override
+  Future<List<ContactModel>> getEmergencyContacts(String docId) async {
+    final snapshot = await contactCollectionReference
+        .doc(docId)
+        .collection('contacts')
+        .get();
+
+    return snapshot.docs
+        .map((doc) => ContactModel.fromMap(doc.data(), doc.id))
+        .where((contact) => contact.isEmergencyContact)
+        .toList();
+  }
+
+  @override
   Future<bool> acceptContact(
       {required String userId,
       required String userName,

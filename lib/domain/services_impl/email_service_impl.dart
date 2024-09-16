@@ -10,10 +10,11 @@ class EmailServicesImpl extends EmailServices {
   final Messages _messages = Messages();
 
   @override
-  Future sendVerificationEmail() async {
+  Future<bool> sendVerificationEmail() async {
     try {
       if (user != null && !user!.emailVerified) {
         await user?.sendEmailVerification();
+        log("email sent");
         return true;
       }
       return false;

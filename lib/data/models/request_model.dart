@@ -16,10 +16,10 @@ class RequestModel {
   factory RequestModel.fromMap(Map<String, dynamic> map, String newDocId) {
     return RequestModel(
       docId: newDocId,
-      senderId: map['senderId'] as String,
-      senderPhoneNumber: map['senderPhoneNumber'] as String,
-      senderPhotoUrl: map['senderPhotoUrl'] as String,
-      senderUserName: map['senderUserName'] as String,
+      senderId: map['senderId'] ?? "",
+      senderPhoneNumber: map['senderPhoneNumber'] ?? "",
+      senderPhotoUrl: map['senderPhotoUrl'] ?? "",
+      senderUserName: map['senderUserName'] ?? "",
     );
   }
 }

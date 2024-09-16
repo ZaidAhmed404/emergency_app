@@ -17,11 +17,11 @@ class ContactModel {
 
   factory ContactModel.fromMap(Map<String, dynamic> map, String newDocId) {
     return ContactModel(
-      userId: map['userId'] as String,
-      phoneNumber: map['phoneNumber'] as String,
-      photoUrl: map['photoUrl'] as String,
-      userName: map['userName'] as String,
-      isEmergencyContact: map['isEmergencyContact'] as bool,
+      userId: map['userId'] ?? "",
+      phoneNumber: map['phoneNumber'] ?? "",
+      photoUrl: map['photoUrl'] ?? "",
+      userName: map['userName'] ?? "",
+      isEmergencyContact: map['isEmergencyContact'] ?? false,
       docId: newDocId,
     );
   }

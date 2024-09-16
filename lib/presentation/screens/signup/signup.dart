@@ -219,6 +219,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         validationFunction: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Phone Number is required';
+                          } else if (value.length > 10) {
+                            return 'Length of phone number is invalid. Length is 10';
                           }
                           return null;
                         },

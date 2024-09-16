@@ -102,6 +102,7 @@ class UserController {
         navigatorKey.currentState
             ?.pushReplacementNamed(EmailVerificationScreen.routeName);
       } else {
+        await userRepository.updateToken();
         ZegoUIKitPrebuiltCallInvitationService().init(
           appID: 501718067,
           appSign:

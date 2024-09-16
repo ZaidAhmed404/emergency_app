@@ -24,7 +24,6 @@ class CallButtonWidget extends StatelessWidget {
       buttonSize: const Size(40, 40),
       isVideoCall: isVideoCall,
       resourceID: "ic_helper",
-      onPressed: (_, __, ___) {},
       invitees: [
         ZegoUIKitUser(
           id: targetUserId,

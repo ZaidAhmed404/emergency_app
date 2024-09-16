@@ -12,7 +12,6 @@ class HeadingTextWidget extends StatelessWidget {
       heading,
       style: TextStyle(
           color: Colors.black, fontWeight: FontWeight.bold, fontSize: fontSize),
-      textAlign: TextAlign.center,
     );
   }
 }
