@@ -92,16 +92,15 @@ class Contacts extends ConsumerWidget {
                                       showDialog(
                                           context: context,
                                           builder: (context) => Dialog(
-                                                insetPadding:
-                                                    const EdgeInsets.all(20),
-                                                child: ContactDetails(
-                                                  contactModel: cont,
-                                                  onCancelFunction: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  onConfirmFunction: () {},
-                                                ),
-                                              ));
+                                              insetPadding:
+                                                  const EdgeInsets.all(20),
+                                              child: ContactDetails(
+                                                contactModel: cont,
+                                                onCancelFunction: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                onConfirmFunction: () {},
+                                              )));
                                     },
                                     child: Column(
                                       crossAxisAlignment:
