@@ -19,7 +19,7 @@ abstract class ContactRepository {
   Future<bool> updateEmergencyContact(
       {required String docId, required bool isEmergency});
 
-  Future<List<ContactModel>> getEmergencyContacts(String docId);
+  Future<List<ContactModel>> getEmergencyContacts();
 
   Future<bool> acceptContact(
       {required String userId,

@@ -121,9 +121,9 @@ class ContactRepositoryImpl extends ContactRepository {
   }
 
   @override
-  Future<List<ContactModel>> getEmergencyContacts(String docId) async {
+  Future<List<ContactModel>> getEmergencyContacts() async {
     final snapshot = await contactCollectionReference
-        .doc(docId)
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection('contacts')
         .get();
 

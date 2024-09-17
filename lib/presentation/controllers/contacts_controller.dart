@@ -98,4 +98,13 @@ class ContactsController {
       toastWidget(isError: true, message: error.toString());
     }
   }
+
+  Future<List<ContactModel>> handleGetEmergencyContacts() async {
+    try {
+      return await contactRepository.getEmergencyContacts();
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+      return [];
+    }
+  }
 }

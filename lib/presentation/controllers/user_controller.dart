@@ -8,6 +8,7 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import '../../core/messages.dart';
+import '../../data/models/contact_model.dart';
 import '../../data/repositories/storage_repository.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../main.dart';
@@ -131,6 +132,17 @@ class UserController {
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
       return null;
+    }
+  }
+
+  Future<List<String>> handleGetEmergencyContactTokens(
+      List<ContactModel> contacts) async {
+    try {
+      return await userRepository.getEmergencyContactsTokens(
+          contacts: contacts);
+    } catch (error) {
+      toastWidget(isError: true, message: error.toString());
+      return [];
     }
   }
 }
