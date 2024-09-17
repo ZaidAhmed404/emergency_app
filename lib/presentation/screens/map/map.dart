@@ -4,7 +4,7 @@ import 'package:emergency_app/core/messages.dart';
 import 'package:emergency_app/presentation/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:lottie/lottie.dart';
 
 class MapScreen extends StatefulWidget {
@@ -15,13 +15,15 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapScreen> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  final Completer<gmaps.GoogleMapController> _controller =
+      Completer<gmaps.GoogleMapController>();
 
   final Messages _messages = Messages();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+  Set<gmaps.Marker> _markers = {};
+
+  static const gmaps.CameraPosition _kGooglePlex = gmaps.CameraPosition(
+    target: gmaps.LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
@@ -68,6 +70,14 @@ class MapSampleState extends State<MapScreen> {
       isLoading = true;
     });
     _currentPosition = await _determinePosition();
+    var locationData =
+        gmaps.LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+
+    _markers.add(gmaps.Marker(
+      markerId: const gmaps.MarkerId('currentLocation'),
+      position: locationData,
+      infoWindow: const gmaps.InfoWindow(title: 'Your Location'),
+    ));
     setState(() {
       isLoading = false;
     });
@@ -83,17 +93,18 @@ class MapSampleState extends State<MapScreen> {
                   height: 50,
                   child: Lottie.asset('assets/lottie/loading.json')),
             )
-          : GoogleMap(
-              mapType: MapType.normal,
+          : gmaps.GoogleMap(
+              markers: _markers,
+              mapType: gmaps.MapType.normal,
               initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
+              onMapCreated: (gmaps.GoogleMapController controller) {
                 _controller.complete(controller);
               },
               circles: {
                 if (isLoading == false)
-                  Circle(
-                      circleId: const CircleId('1'),
-                      center: LatLng(
+                  gmaps.Circle(
+                      circleId: const gmaps.CircleId('1'),
+                      center: gmaps.LatLng(
                         _currentPosition!.latitude,
                         _currentPosition!.longitude,
                       ),

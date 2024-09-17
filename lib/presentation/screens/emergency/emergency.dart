@@ -47,41 +47,28 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   }
 
   Future initializeSetting() async {
+    setState(() {
+      isLoading = true;
+    });
     await askPermission();
     await getEmergencyContacts();
     await getEmergencyContactTokens();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future getEmergencyContacts() async {
-    setState(() {
-      isLoading = true;
-    });
     emergencyContacts = await _contactController.handleGetEmergencyContacts();
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Future getEmergencyContactTokens() async {
-    setState(() {
-      isLoading = true;
-    });
     tokens = await _userController
         .handleGetEmergencyContactTokens(emergencyContacts);
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Future askPermission() async {
-    setState(() {
-      isLoading = true;
-    });
     await telephony.requestPhoneAndSmsPermissions;
-    setState(() {
-      isLoading = false;
-    });
   }
 
   sendSms() async {
