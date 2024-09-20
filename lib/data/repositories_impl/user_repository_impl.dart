@@ -10,7 +10,6 @@ import '../models/user_model.dart';
 import '../repositories/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
-  final firebaseAuth = FirebaseAuth.instance;
   CollectionReference userCollectionReference =
       FirebaseFirestore.instance.collection('users');
 
@@ -25,10 +24,14 @@ class UserRepositoryImpl extends UserRepository {
     required String phoneNumber,
   }) async {
     // TODO: implement saveUserProfile
-    String? token = await FirebaseMessaging.instance.getToken();
+    final messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+    log("${token}", name: "token");
     try {
-      await userCollectionReference.doc(firebaseAuth.currentUser!.uid).set({
-        "uid": firebaseAuth.currentUser!.uid,
+      await userCollectionReference
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .update({
+        "uid": FirebaseAuth.instance.currentUser?.uid,
         'userName': userName,
         "firstName": firstName,
         "lastName": lastName,
@@ -49,11 +52,16 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future updateToken() async {
     try {
-      FirebaseMessaging messaging = FirebaseMessaging.instance;
-      messaging.onTokenRefresh.listen((newToken) async {
+      final firebaseMessaging = FirebaseMessaging.instance;
+      String? token = await firebaseMessaging.getToken();
+      await userCollectionReference
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .update({"token": token});
+      log("$token", name: "token");
+      firebaseMessaging.onTokenRefresh.listen((newToken) async {
         await userCollectionReference
-            .doc(firebaseAuth.currentUser!.uid)
-            .set({"token": newToken});
+            .doc(FirebaseAuth.instance.currentUser?.uid)
+            .update({"token": newToken});
       });
     } catch (error) {
       log("$error", name: "error");

@@ -2,34 +2,54 @@ import 'dart:developer';
 
 import 'package:emergency_app/data/models/contact_model.dart';
 import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
+import 'package:emergency_app/presentation/controllers/notification_controller.dart';
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
+import 'package:emergency_app/presentation/provider/user_provider.dart';
 import 'package:emergency_app/presentation/screens/emergency/widgets/category_card.dart';
 import 'package:emergency_app/presentation/widgets/overlay_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:telephony/telephony.dart';
 
 import '../../widgets/heading_text.dart';
 
-class EmergencyScreen extends StatefulWidget {
+class EmergencyScreen extends ConsumerStatefulWidget {
   EmergencyScreen({super.key});
 
   @override
-  State<EmergencyScreen> createState() => _EmergencyScreenState();
+  ConsumerState<EmergencyScreen> createState() => _EmergencyScreenState();
 }
 
-class _EmergencyScreenState extends State<EmergencyScreen> {
+class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
   List<Map> cards = [
-    {'title': 'Theft Spotted', 'body': 'He Got Robbed Help Him'},
-    {'title': 'I Have Accident', 'body': 'Accident Spotted Help Him'},
-    {'title': 'I Am Injured', 'body': 'Help Him He is Injured'},
-    {'title': 'Petrol Need', 'body': 'He Need Petrol Help Him'},
+    {
+      'title': 'Theft Spotted',
+      'body': 'has been robbed! Immediate help required.'
+    },
+    {
+      'title': 'Have Accident',
+      'body': 'has been in an accident! Immediate assistance needed!'
+    },
+    {
+      'title': 'Heavily Injured',
+      'body': 'is injured and needs immediate help!'
+    },
+    {
+      'title': 'Petrol Needed',
+      'body': 'is out of petrol and needs assistance!'
+    },
   ];
 
   final ContactsController _contactController = GetIt.I<ContactsController>();
+
+  final NotificationController _notificationController =
+      GetIt.I<NotificationController>();
+
   final UserController _userController = GetIt.I<UserController>();
 
   List<ContactModel> emergencyContacts = [];
+
   List<String> tokens = [];
 
   final Telephony telephony = Telephony.instance;
@@ -71,6 +91,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     await telephony.requestPhoneAndSmsPermissions;
   }
 
+  sendNotifications() async {
+    for (int index = 0; index < tokens.length; index++) {
+      await _notificationController.handleSendingNotification(
+          token: tokens[index],
+          title: cards[_selectedCategoryIndex]['title'],
+          body:
+              "${ref.watch(userNotifierProvider).userName} ${cards[_selectedCategoryIndex]['body']}\nPhone Number:${ref.watch(userNotifierProvider).phoneNumber}");
+    }
+  }
+
   sendSms() async {
     final SmsSendStatusListener listener = (SendStatus status) {
       log("${status}", name: 'status');
@@ -94,8 +124,15 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                   heading: "Emergency Help Needed?", fontSize: 25),
               const Spacer(),
               InkWell(
-                  onTap: () {
-                    sendSms();
+                  onTap: () async {
+                    // sendSms();
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await sendNotifications();
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   child: Center(
                       child: Image.asset('assets/images/Alertbutton.png'))),

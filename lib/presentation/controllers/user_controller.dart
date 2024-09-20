@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:emergency_app/data/models/user_model.dart';
 import 'package:emergency_app/domain/services/email_services.dart';
 import 'package:emergency_app/presentation/screens/complete_profile/complete_profile.dart';
 import 'package:emergency_app/presentation/screens/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -15,6 +19,7 @@ import '../../main.dart';
 import '../provider/user_provider.dart';
 import '../screens/email_verification/email_verification.dart';
 import '../screens/home/home.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/toast.dart';
 
 class UserController {
@@ -85,7 +90,42 @@ class UserController {
     }
   }
 
-  Future initializeSetting(WidgetRef ref) async {
+  listenToNotifications(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      log('Got a message whilst in the foreground!');
+      log('Message data: ${message.data}');
+      final notification = message.notification;
+      if (notification != null) {
+        log('${notification.title}', name: "title");
+        log("${notification.body}", name: "body");
+        showDialog(
+            context: navigatorKey.currentContext!,
+            builder: (context) => Dialog(
+                  child: AlertDialogWidget(
+                    title: "${notification.title}",
+                    message: "${notification.body}",
+                  ),
+                ));
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      final notification = message.notification;
+      if (notification != null) {
+        showDialog(
+            context: navigatorKey.currentContext!,
+            builder: (context) => Dialog(
+                  child: AlertDialogWidget(
+                    title: "${notification.title}",
+                    message: "${notification.body}",
+                  ),
+                ));
+        log('${notification.body}', name: "Notification message");
+      }
+    });
+  }
+
+  Future initializeSetting(WidgetRef ref, BuildContext context) async {
+    listenToNotifications(context);
     UserModel? userModel = await userRepository.getUserData();
     if (FirebaseAuth.instance.currentUser?.uid == null) {
       navigatorKey.currentState?.pushReplacementNamed(LoginScreen.routeName);
@@ -103,6 +143,18 @@ class UserController {
         navigatorKey.currentState
             ?.pushReplacementNamed(EmailVerificationScreen.routeName);
       } else {
+        final messaging = FirebaseMessaging.instance;
+
+        await messaging.requestPermission(
+          alert: true,
+          announcement: false,
+          badge: true,
+          carPlay: false,
+          criticalAlert: false,
+          provisional: false,
+          sound: true,
+        );
+
         await userRepository.updateToken();
         ZegoUIKitPrebuiltCallInvitationService().init(
           appID: 501718067,

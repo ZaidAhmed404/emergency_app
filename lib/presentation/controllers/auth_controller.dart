@@ -1,4 +1,5 @@
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/messages.dart';
@@ -54,12 +55,14 @@ class AuthController {
   Future handleSignInWithEmail(
       {required String email,
       required String password,
-      required WidgetRef ref}) async {
+      required WidgetRef ref,
+      required BuildContext context}) async {
     try {
       bool isSuccess = await authRepository.signInWithEmail(email, password);
+    
       if (isSuccess) {
         await emailServices.sendVerificationEmail();
-        await userController.initializeSetting(ref);
+        await userController.initializeSetting(ref, context);
       }
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
@@ -83,10 +86,11 @@ class AuthController {
     return isSuccess;
   }
 
-  Future handleSignInWithGoogle({required WidgetRef ref}) async {
+  Future handleSignInWithGoogle(
+      {required WidgetRef ref, required BuildContext context}) async {
     try {
       await authRepository.signInWithGoogle();
-      await userController.initializeSetting(ref);
+      await userController.initializeSetting(ref, context);
     } catch (error) {
       toastWidget(isError: true, message: error.toString());
     }

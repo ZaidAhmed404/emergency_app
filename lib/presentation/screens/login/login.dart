@@ -124,6 +124,7 @@ class LoginScreen extends ConsumerWidget {
                       await _authController.handleSignInWithEmail(
                           email: emailController.text,
                           password: passwordController.text,
+                          context: context,
                           ref: ref);
                     }
                     screenNotifier.updateLoading(isLoading: false);
@@ -148,7 +149,10 @@ class LoginScreen extends ConsumerWidget {
                   iconUrl: "assets/icons/google_ic.svg",
                   text: "Google",
                   onPressedFunction: () {
-                    _authController.handleSignInWithGoogle(ref: ref);
+                    _authController.handleSignInWithGoogle(
+                      context: context,
+                      ref: ref,
+                    );
                   },
                 ),
                 const SizedBox(

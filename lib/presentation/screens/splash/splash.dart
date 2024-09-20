@@ -27,7 +27,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future initialize() async {
-    await _userController.initializeSetting(ref);
+    await _userController.initializeSetting(ref, context);
   }
 
   @override
