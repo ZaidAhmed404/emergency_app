@@ -113,62 +113,61 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return OverlayLoadingWidget(
-      isLoading: isLoading,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeadingTextWidget(
-                  heading: "Emergency Help Needed?", fontSize: 25),
-              const Spacer(),
-              InkWell(
-                  onTap: () async {
-                    // sendSms();
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await sendNotifications();
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  child: Center(
-                      child: Image.asset('assets/images/Alertbutton.png'))),
-              const Spacer(),
-              Center(
-                child: HeadingTextWidget(
-                    heading: "Choose the emergency Situation", fontSize: 14),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 130,
-                width: 400,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: cards.length,
-                    itemBuilder: (context, index) {
-                      return CategoryCard(
-                        text: cards[index]['title'],
-                        isSelected: _selectedCategoryIndex == index,
-                        onTap: () {
-                          setState(() {
-                            _selectedCategoryIndex = index;
-                            selectedText = cards[index]['title'];
-                            selectedBody = cards[index]['body'];
-                          });
-                        },
-                      );
-                    }),
-              ),
-              const Spacer(),
-            ],
+        isLoading: isLoading,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeadingTextWidget(
+                    heading: "Emergency Help Needed?", fontSize: 25),
+                const Spacer(),
+                InkWell(
+                    onTap: () async {
+                      // sendSms();
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await sendNotifications();
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+                    child: Center(
+                        child: Image.asset('assets/images/Alertbutton.png'))),
+                const Spacer(),
+                Center(
+                  child: HeadingTextWidget(
+                      heading: "Choose the emergency Situation", fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 130,
+                  width: 400,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: cards.length,
+                      itemBuilder: (context, index) {
+                        return CategoryCard(
+                          text: cards[index]['title'],
+                          isSelected: _selectedCategoryIndex == index,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategoryIndex = index;
+                              selectedText = cards[index]['title'];
+                              selectedBody = cards[index]['body'];
+                            });
+                          },
+                        );
+                      }),
+                ),
+                const Spacer(),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
