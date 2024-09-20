@@ -1,9 +1,11 @@
 import 'package:emergency_app/data/repositories_impl/chat_repository_impl.dart';
 import 'package:emergency_app/data/repositories_impl/contact_repository_impl.dart';
 import 'package:emergency_app/domain/services_impl/chat_services_impl.dart';
+import 'package:emergency_app/domain/services_impl/map_services_impl.dart';
 import 'package:emergency_app/domain/services_impl/notification_services_impl.dart';
 import 'package:emergency_app/presentation/controllers/chat_message_controller.dart';
 import 'package:emergency_app/presentation/controllers/contacts_controller.dart';
+import 'package:emergency_app/presentation/controllers/map_controller.dart';
 import 'package:emergency_app/presentation/controllers/notification_controller.dart';
 import 'package:emergency_app/presentation/controllers/storage_controller.dart';
 import 'package:emergency_app/presentation/controllers/user_controller.dart';
@@ -66,5 +68,11 @@ void setupDependencyInjection() {
 
   getIt.registerFactory<NotificationController>(() => NotificationController(
         getIt<NotificationServicesImpl>(),
+      ));
+
+  getIt.registerLazySingleton<MapServicesImpl>(() => MapServicesImpl());
+
+  getIt.registerFactory<MapController>(() => MapController(
+        getIt<MapServicesImpl>(),
       ));
 }

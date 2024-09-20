@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:emergency_app/core/messages.dart';
-import 'package:emergency_app/presentation/widgets/toast.dart';
+import 'package:emergency_app/presentation/controllers/map_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:lottie/lottie.dart';
 
@@ -29,33 +30,6 @@ class MapSampleState extends State<MapScreen> {
 
   Position? _currentPosition;
 
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      toastWidget(
-          isError: true, message: _messages.locationServicesDisabledMessage);
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        toastWidget(
-            isError: true, message: _messages.locationPermissionDeniedMessage);
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      toastWidget(isError: true, message: "Location services are disabled.");
-      toastWidget(
-          isError: true, message: _messages.locationDeniedForeverMessage);
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -65,11 +39,13 @@ class MapSampleState extends State<MapScreen> {
 
   bool isLoading = false;
 
+  final MapController _mapController = GetIt.I<MapController>();
+
   getCurrentPosition() async {
     setState(() {
       isLoading = true;
     });
-    _currentPosition = await _determinePosition();
+    _currentPosition = await _mapController.handleGettingCurrentPosition();
     var locationData =
         gmaps.LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
 
