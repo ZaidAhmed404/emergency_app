@@ -161,7 +161,8 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
                       });
                     },
                     child: Center(
-                        child: Image.asset('assets/images/Alertbutton.png'))),
+                      child: Image.asset('assets/images/Alertbutton.png'),
+                    )),
                 const Spacer(),
                 Center(
                   child: HeadingTextWidget(
