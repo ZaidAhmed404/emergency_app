@@ -153,8 +153,8 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
                       setState(() {
                         isLoading = true;
                       });
-                      // await sendNotifications();
-                      await sendSms();
+                      await sendNotifications();
+                      // await sendSms();
 
                       setState(() {
                         isLoading = false;
