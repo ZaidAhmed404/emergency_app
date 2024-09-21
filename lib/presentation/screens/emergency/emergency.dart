@@ -10,7 +10,9 @@ import 'package:emergency_app/presentation/widgets/overlay_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shake/shake.dart';
 import 'package:telephony/telephony.dart';
+import 'package:twilio_flutter/twilio_flutter.dart';
 
 import '../../widgets/heading_text.dart';
 
@@ -73,6 +75,15 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
     await askPermission();
     await getEmergencyContacts();
     await getEmergencyContactTokens();
+    ShakeDetector.autoStart(
+      onPhoneShake: () {
+        sendNotifications();
+      },
+      minimumShakeCount: 1,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
     setState(() {
       isLoading = false;
     });
@@ -101,13 +112,26 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
     }
   }
 
-  sendSms() async {
-    final SmsSendStatusListener listener = (SendStatus status) {
-      log("${status}", name: 'status');
-    };
+  final TwilioFlutter twilioFlutter = TwilioFlutter(
+      accountSid: 'ACc95ddbb9055285d0cc9aa6cf120b59e7',
+      // Replace with your Account SID
+      authToken: 'f36fe928b672486bcf6e2610efb1037d',
+      // Replace with your Auth Token
+      twilioNumber: '+12073932432' // Replace with your Twilio Number
+      );
 
-    telephony.sendSms(
-        to: "+923174703741", message: "Hello World", statusListener: listener);
+  Future sendSms() async {
+    // final SmsSendStatusListener listener = (SendStatus status) {
+    //   log("${status}", name: 'status');
+    // };
+    //
+    // telephony.sendSms(
+    //     to: "+923174703741", message: "Hello World", statusListener: listener);
+
+    TwilioResponse response = await twilioFlutter.sendSMS(
+        toNumber: '+923174703741', // Replace with recipient's number
+        messageBody: 'Hello from Flutter!');
+    log("${response}", name: "response");
   }
 
   @override
@@ -129,7 +153,9 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
                       setState(() {
                         isLoading = true;
                       });
-                      await sendNotifications();
+                      // await sendNotifications();
+                      await sendSms();
+
                       setState(() {
                         isLoading = false;
                       });
