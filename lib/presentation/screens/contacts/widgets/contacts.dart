@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../data/models/contact_model.dart';
 import '../../../controllers/contacts_controller.dart';
 import '../../../provider/screen_provider.dart';
 import 'call_button.dart';
@@ -60,7 +59,6 @@ class Contacts extends ConsumerWidget {
                       : ListView.builder(
                           itemCount: contacts.length,
                           itemBuilder: (context, index) {
-                            ContactModel cont = contacts[index];
                             return Container(
                               margin: const EdgeInsets.only(top: 10),
                               child: Row(
@@ -68,7 +66,8 @@ class Contacts extends ConsumerWidget {
                                   ClipOval(
                                       child: SizedBox.fromSize(
                                     size: const Size.fromRadius(25),
-                                    child: Image.network(cont.photoUrl,
+                                    child: Image.network(
+                                        contacts[index].photoUrl,
                                         fit: BoxFit.fill,
                                         loadingBuilder: (BuildContext context,
                                             Widget child,
@@ -94,7 +93,7 @@ class Contacts extends ConsumerWidget {
                                               insetPadding:
                                                   const EdgeInsets.all(20),
                                               child: ContactDetails(
-                                                contactModel: cont,
+                                                contactModel: contacts[index],
                                                 onCancelFunction: () {
                                                   Navigator.pop(context);
                                                 },
@@ -104,7 +103,8 @@ class Contacts extends ConsumerWidget {
                                                       isLoading: true);
                                                   await _contactsController
                                                       .handleChangingEmergencyContact(
-                                                          docId: cont.docId,
+                                                          docId: contacts[index]
+                                                              .docId,
                                                           isEmergency: true);
                                                   screenNotifier.updateLoading(
                                                       isLoading: false);
@@ -116,29 +116,31 @@ class Contacts extends ConsumerWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          cont.userName,
+                                          contacts[index].userName,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Text(cont.phoneNumber)
+                                        Text(contacts[index].phoneNumber)
                                       ],
                                     ),
                                   ),
                                   const Spacer(),
                                   CallButtonWidget(
                                     isVideoCall: false,
-                                    targetUserId: cont.userId,
-                                    targetUserName: cont.userName,
-                                    targetUserPhotoUrl: cont.photoUrl,
+                                    targetUserId: contacts[index].userId,
+                                    targetUserName: contacts[index].userName,
+                                    targetUserPhotoUrl:
+                                        contacts[index].photoUrl,
                                   ),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   CallButtonWidget(
                                     isVideoCall: true,
-                                    targetUserId: cont.userId,
-                                    targetUserName: cont.userName,
-                                    targetUserPhotoUrl: cont.photoUrl,
+                                    targetUserId: contacts[index].userId,
+                                    targetUserName: contacts[index].userName,
+                                    targetUserPhotoUrl:
+                                        contacts[index].photoUrl,
                                   ),
                                 ],
                               ),

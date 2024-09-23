@@ -23,7 +23,7 @@ class MapSampleState extends State<MapScreen> {
 
   Set<gmaps.Marker> _markers = {};
 
-  static const gmaps.CameraPosition _kGooglePlex = gmaps.CameraPosition(
+  static gmaps.CameraPosition _kGooglePlex = gmaps.CameraPosition(
     target: gmaps.LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
@@ -54,6 +54,11 @@ class MapSampleState extends State<MapScreen> {
       position: locationData,
       infoWindow: const gmaps.InfoWindow(title: 'Your Location'),
     ));
+    _kGooglePlex = gmaps.CameraPosition(
+      target:
+          gmaps.LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+      zoom: 14.4746,
+    );
     setState(() {
       isLoading = false;
     });

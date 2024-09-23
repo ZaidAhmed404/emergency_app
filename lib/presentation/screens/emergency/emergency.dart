@@ -108,7 +108,7 @@ class _EmergencyScreenState extends ConsumerState<EmergencyScreen> {
           token: tokens[index],
           title: cards[_selectedCategoryIndex]['title'],
           body:
-              "${ref.watch(userNotifierProvider).userName} ${cards[_selectedCategoryIndex]['body']}\nPhone Number:${ref.watch(userNotifierProvider).phoneNumber}");
+              "${ref.watch(userNotifierProvider).userName} ${cards[_selectedCategoryIndex]['body']}\n\nPhone Number:${ref.watch(userNotifierProvider).phoneNumber}");
     }
   }
 

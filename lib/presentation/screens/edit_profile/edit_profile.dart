@@ -254,6 +254,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       ),
                     ]),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   if (isEditing)
                     TextButtonWidget(
                       buttonWidth: MediaQuery.of(context).size.width,

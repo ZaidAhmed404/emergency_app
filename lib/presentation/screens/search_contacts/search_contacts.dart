@@ -42,7 +42,7 @@ class _SearchContactsScreenState extends ConsumerState<SearchContactsScreen> {
         child: OverlayLoadingWidget(
           isLoading: ref.watch(screenNotifierProvider),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,7 +187,7 @@ class _SearchContactsScreenState extends ConsumerState<SearchContactsScreen> {
                                                     }),
                                                   )),
                                                   const SizedBox(
-                                                    width: 20,
+                                                    width: 10,
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
@@ -240,7 +240,7 @@ class _SearchContactsScreenState extends ConsumerState<SearchContactsScreen> {
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .width *
-                                                              0.3)
+                                                              0.35)
                                                 ],
                                               ),
                                               const Divider(
