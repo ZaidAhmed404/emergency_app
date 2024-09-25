@@ -42,3 +42,5 @@ Automatically sends **alerts and SMS notifications** to your emergency contacts 
 This project follows **Clean Architecture** principles, ensuring separation of concerns and maintainability. The state management is handled by **Riverpod**.
 
 
+https://github.com/user-attachments/assets/889799f0-39c1-4a53-8cb0-00db7a3e1704
+
